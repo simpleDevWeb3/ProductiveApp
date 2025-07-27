@@ -18,25 +18,28 @@ class TimerView(Frame):
         _TbtnContainer.pack(expand=True)
         _TbtnContainer.columnconfigure((0, 1, 2), weight=1)
 
-        PomodoroBtn = Button(_TbtnContainer, text="Pomodoro",
-                             font=("Arial", 12, 'bold'), fg='white',
-                             bg=TimerSection['bg'], padx=20, pady=10,
-                             borderwidth=0, highlightthickness=0,
-                             activebackground="lightblue")
+        # Save buttons as instance variables so you can access them later
+        self.pomodoroBtn = Button(_TbtnContainer, text="Pomodoro",
+                                  font=("Arial", 12, 'bold'), fg='white',
+                                  bg='#E493A2', padx=20, pady=10,
+                                  borderwidth=0, highlightthickness=0,
+                                 )
 
-        ShortBreak = Button(_TbtnContainer, text="Short Break",
-                            font=("Arial", 12, 'bold'), fg='white',
-                            bg=TimerSection['bg'], padx=20, pady=10,
-                            borderwidth=0, highlightthickness=0)
+        self.shortBreakBtn = Button(_TbtnContainer, text="Short Break",
+                                    font=("Arial", 12, 'bold'), fg='white',
+                                    bg=TimerSection['bg'], padx=20, pady=10,
+                                    borderwidth=0, highlightthickness=0)
 
-        LongBreak = Button(_TbtnContainer, text="Long Break",
-                           font=("Arial", 12, 'bold'), fg='white',
-                           bg=TimerSection['bg'], padx=20, pady=10,
-                           borderwidth=0, highlightthickness=0)
+        self.longBreakBtn = Button(_TbtnContainer, text="Long Break",
+                                   font=("Arial", 12, 'bold'), fg='white',
+                                   bg=TimerSection['bg'], padx=20, pady=10,
+                                   borderwidth=0, highlightthickness=0)
 
-        PomodoroBtn.grid(row=0, column=0)
-        ShortBreak.grid(row=0, column=1)
-        LongBreak.grid(row=0, column=2)
+        self.pomodoroBtn.grid(row=0, column=0)
+        self.shortBreakBtn.grid(row=0, column=1)
+        self.longBreakBtn.grid(row=0, column=2)
+
+     
 
         # Center Timer Display
         _Tcenter = Frame(TimerSection, bg=TimerSection['bg'], height=200)
@@ -59,15 +62,28 @@ class TimerView(Frame):
                                 padx=40, pady=30)
         self._startBtn.pack(expand=True)
 
-    def toggleStartButtonText(self):
-        current = self._startBtn['text']
-        new_text = "STOP" if current == "START" else "START"
+
+    def renderTimer(self, minutes, seconds):
+        time_str = f"{minutes:02}:{seconds:02}"
+        self._lTimerLabel.config(text=time_str)
+
+    def toggleStartButtonText(self,isStart):
+   
+        new_text = "STOP" if isStart  else "START"
         self._startBtn.config(text=new_text)
 
     def setStartHandler(self, handler):
-        def func():
-            handler()
-            self.toggleStartButtonText()
+        self._startBtn.config(command=handler)
         
+    
+    def setModeHandler(self, handler):
+        self.pomodoroBtn.config(command=lambda: handler("Pomodoro"))
+        self.shortBreakBtn.config(command=lambda: handler("ShortBreak"))
+        self.longBreakBtn.config(command=lambda: handler("LongBreak"))
 
-        self._startBtn.config(command=func)
+    def highlightModeButton(self, selected):
+        buttons = [self.pomodoroBtn, self.shortBreakBtn, self.longBreakBtn]
+        
+        for btn in buttons:
+            btn.config(bg='#c26566')  # Reset all to default
+        selected.config(bg="#E493A2")    # Highlight the clicked one
