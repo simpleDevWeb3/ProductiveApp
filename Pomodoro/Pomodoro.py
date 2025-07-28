@@ -8,16 +8,22 @@ class Pomodoro(Frame):
 
     def __init__(self,master):
         super().__init__(master,bg='#BA4949')
+        #UI Container
         self.pack(expand=True, fill="both")
         self.navbar = Navbar(self)
         self.timerView = TimerView(self)
         self.timerId = None  
-        self.init()
+       
         
-        #config 
-        self.mode = Model.State["CurrentMode"] 
-        self.min = Model.Timer[Model.State["CurrentMode"]]["Minute"]
-        self.sec = Model.Timer[Model.State["CurrentMode"]]["Seconds"]
+        # config
+       # self.state = Model.get_state()
+        #self.mode,Model.get_Mode() = self.state.get("CurrentMode"),self.state.get("isStart")  
+
+        #self.timer = Model.get_timer(self.mode)     
+        #self.min, self.sec = self.timer.get("Minute", 0), self.timer.get("Seconds", 0)
+
+        #UI Event Listener
+        self.init()
 ################################### ##################
 
 
@@ -28,52 +34,55 @@ class Pomodoro(Frame):
     #TIMER
     ##################################
     def startTimer(self):
-         if Model.State["isStart"]:  # prevent timer goe crazy
+         if Model.get_Start():  # prevent timer goe crazy
              return
          
-         Model.State["isStart"] = True
+         #Model.State["isStart"] = True
+         Model.set_Start(True)
+         print(Model.get_Start(),"From start Timer")
+         
          self.countdown()
-         self.timerView.renderTimer(self.min,self.sec)
-         self.timerView.toggleStartButtonText(Model.State["isStart"])
+         self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
+         self.timerView.toggleStartButtonText(Model.get_Start())
 
     def stopTimer(self):
-         Model.State["isStart"] = False
+         Model.set_Start(False)
          if self.timerId:
             self.after_cancel(self.timerId)
             self.timerId = None
-         self.timerView.renderTimer(self.min,self.sec)
-         self.timerView.toggleStartButtonText(Model.State["isStart"])
-    
+         self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
+         self.timerView.toggleStartButtonText(Model.get_Start())
+         print(Model.get_Mode())
     def countdown(self):
-        if Model.State["isStart"]:
-            #guarding operation before minus min
-            if self.sec > 0:
+     if Model.get_Start():
+        min_left = Model.get_timer("Min")
+        sec_left = Model.get_timer("Sec")
 
-                self.sec-= 1
+        if sec_left > 0:
+            Model.decrease_Timer("Sec", 1)
+        elif min_left > 0:
+            Model.decrease_Timer("Min", 1)
+            Model.set_Timer("Sec", 59)
+        else:
+            self.stopTimer()
+            Model.resetTimer()
+            self.timerView.renderTimer(Model.get_timer('Min'), Model.get_timer('Sec'))
+            return  # Timer ends
 
-            elif self.min > 0:
-
-                self.min -= 1
-                self.sec = 59
-
-            else:
-                self.stopTimer()
-                self.resetTimer()
-                return  # timer ends
-
-            self.timerView.renderTimer(self.min,self.sec)
-            self.timerId = self.after(1000, self.countdown) 
+        # Update timer view
+        self.timerView.renderTimer(Model.get_timer('Min'), Model.get_timer('Sec'))
+        self.timerId = self.after(1000, self.countdown)
 
     def timerControl(self):
         #Timer Mode
-        print(self.min,self.sec)
+        print(Model.Timer)
 
         self.timerView._startBtn.config(state=DISABLED)
         self.after(300, lambda: self.timerView._startBtn.config(state=NORMAL))
         
     
 
-        if Model.State["isStart"] == False:
+        if not Model.get_Start():
             self.startTimer()
         else:
             self.stopTimer()
@@ -84,28 +93,26 @@ class Pomodoro(Frame):
 
     ########Config Timer########
     
-    def resetTimer(self):
-       self.min = Model.Timer[Model.State["CurrentMode"]]["Minute"]
-       self.sec = Model.Timer[Model.State["CurrentMode"]]["Seconds"]
 
     def modeControl(self,timerMode):
         print(timerMode)
 
-        self.mode = timerMode  
-       
-        Model.State["CurrentMode"] = timerMode 
+        #self.mode = timerMode  
+        #Model.State["CurrentMode"] = timerMode 
+
+        Model.set_Mode(timerMode)
         self.stopTimer()
-        self.resetTimer()
+        Model.resetTimer()
      
-        self.timerView.renderTimer(self.min,self.sec)
+        self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
             
         
         # Highlight the right button
-        if self.mode == "Pomodoro":
+        if Model.get_Mode() == "Pomodoro":
             self.timerView.highlightModeButton(self.timerView.pomodoroBtn)
-        elif self.mode == "ShortBreak":
+        elif Model.get_Mode() == "ShortBreak":
             self.timerView.highlightModeButton(self.timerView.shortBreakBtn)
-        elif self.mode == "LongBreak":
+        elif Model.get_Mode() == "LongBreak":
             self.timerView.highlightModeButton(self.timerView.longBreakBtn)
 
     ######################
