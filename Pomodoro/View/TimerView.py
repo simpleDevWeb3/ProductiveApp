@@ -46,7 +46,7 @@ class TimerView(Frame):
         _Tcenter.pack(fill='x')
         _Tcenter.pack_propagate(False)
 
-        self._lTimerLabel = Label(_Tcenter, text="25:00",
+        self._lTimerLabel = Label(_Tcenter,
                                   fg="white", bg=TimerSection['bg'],
                                   font=("Arial", 100))
         self._lTimerLabel.pack(expand=True)
@@ -66,6 +66,7 @@ class TimerView(Frame):
     def renderTimer(self, minutes, seconds):
         time_str = f"{minutes:02}:{seconds:02}"
         self._lTimerLabel.config(text=time_str)
+        print(f"[renderTimer] Rendering: { minutes}:{seconds}")
 
     def toggleStartButtonText(self,isStart):
    

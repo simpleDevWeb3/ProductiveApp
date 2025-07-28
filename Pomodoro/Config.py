@@ -1,10 +1,9 @@
 
 Minute = "Minute"
 Seconds = "Seconds"
-isStart = "isStart"
-CurrentMode= "CurrentMode"
-
-
-
 Min = "Min"
 Sec = "Sec"
+isStart = "isStart"
+CurrentMode = "CurrentMode"
+
+DATA_FILE = "data.json"

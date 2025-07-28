@@ -1,0 +1,24 @@
+{
+    "Mode": {
+        "Pomodoro": {
+            "Minute": 25,
+            "Seconds": 0
+        },
+        "ShortBreak": {
+            "Minute": 5,
+            "Seconds": 0
+        },
+        "LongBreak": {
+            "Minute": 10,
+            "Seconds": 0
+        }
+    },
+    "State": {
+        "isStart": false,
+        "CurrentMode": "Pomodoro"
+    },
+    "Timer": {
+        "Min": 25,
+        "Sec": 0
+    }
+}

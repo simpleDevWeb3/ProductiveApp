@@ -13,8 +13,9 @@ class Pomodoro(Frame):
         self.navbar = Navbar(self)
         self.timerView = TimerView(self)
         self.timerId = None  
-       
-        
+
+      
+
         # config
        # self.state = Model.get_state()
         #self.mode,Model.get_Mode() = self.state.get("CurrentMode"),self.state.get("isStart")  
@@ -34,9 +35,8 @@ class Pomodoro(Frame):
     #TIMER
     ##################################
     def startTimer(self):
-         if Model.get_Start():  # prevent timer goe crazy
-             return
          
+         print(Model.get_timer('Min'),Model.get_timer('Sec'))
          #Model.State["isStart"] = True
          Model.set_Start(True)
          print(Model.get_Start(),"From start Timer")
@@ -57,17 +57,20 @@ class Pomodoro(Frame):
      if Model.get_Start():
         min_left = Model.get_timer("Min")
         sec_left = Model.get_timer("Sec")
+        print("sec_left", sec_left)
 
+        if min_left == 0 and sec_left == 0:
+            self.stopTimer()
+            Model.resetTimer()
+            self.timerView.renderTimer(Model.get_timer('Min'), Model.get_timer('Sec'))
+            return  # Timer ends
         if sec_left > 0:
             Model.decrease_Timer("Sec", 1)
         elif min_left > 0:
             Model.decrease_Timer("Min", 1)
             Model.set_Timer("Sec", 59)
-        else:
-            self.stopTimer()
-            Model.resetTimer()
-            self.timerView.renderTimer(Model.get_timer('Min'), Model.get_timer('Sec'))
-            return  # Timer ends
+
+        Model.save_data()
 
         # Update timer view
         self.timerView.renderTimer(Model.get_timer('Min'), Model.get_timer('Sec'))
@@ -93,6 +96,17 @@ class Pomodoro(Frame):
 
     ########Config Timer########
     
+    def changeMode(self,timerMode):
+        Model.set_Mode(timerMode)
+        self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
+
+         # Highlight the right button
+        if Model.get_Mode() == "Pomodoro":
+            self.timerView.highlightModeButton(self.timerView.pomodoroBtn)
+        elif Model.get_Mode() == "ShortBreak":
+            self.timerView.highlightModeButton(self.timerView.shortBreakBtn)
+        elif Model.get_Mode() == "LongBreak":
+            self.timerView.highlightModeButton(self.timerView.longBreakBtn)
 
     def modeControl(self,timerMode):
         print(timerMode)
@@ -103,21 +117,30 @@ class Pomodoro(Frame):
         Model.set_Mode(timerMode)
         self.stopTimer()
         Model.resetTimer()
-     
-        self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
+        self.changeMode(timerMode)
+
+       # self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
             
         
-        # Highlight the right button
-        if Model.get_Mode() == "Pomodoro":
-            self.timerView.highlightModeButton(self.timerView.pomodoroBtn)
-        elif Model.get_Mode() == "ShortBreak":
-            self.timerView.highlightModeButton(self.timerView.shortBreakBtn)
-        elif Model.get_Mode() == "LongBreak":
-            self.timerView.highlightModeButton(self.timerView.longBreakBtn)
+       
 
     ######################
 
      
     def init(self):
+         Model.load_data()
+         print("init", Model.get_timer('Min'),Model.get_timer('Sec'))
+         self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
+        
+         if Model.get_Start():
+            print("run timer ")
+            print(Model.Timer)
+            self.startTimer()
+
+         self.changeMode(Model.get_Mode())
+         
+         #self.modeControl(Model.get_Mode())
+        
+        
          self.timerView.setStartHandler(self.timerControl)
          self.timerView.setModeHandler(self.modeControl)
