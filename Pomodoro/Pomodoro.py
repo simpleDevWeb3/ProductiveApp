@@ -18,7 +18,7 @@ class Pomodoro(Frame):
         self.timerId = None  
         self.overlay = Frame(self,bg="#555555")
         self.settingView =SettingView(self.overlay)
-      
+        self.task_counter = 0
        
         self.openModal = False
         self.init()
@@ -146,11 +146,43 @@ class Pomodoro(Frame):
        
 
     ######################
+    def AddTask(self, tid, button, entry):
+        task_text = entry.get().strip()
 
+        if task_text:
+            print(f"[Task #{tid}] Saved: {task_text}")
+            TContent = task_text
+            Tid = tid
+            Pomodoro = 1 
+
+            entry.config(bg="#E39090")
+            entry.config(state="readonly")
+            button.config(text="Delete", command=lambda: self.RemoveTask(tid, button, entry))
+        
+            self.TaskView.AddBtn.config(state=NORMAL)
+            Model.create_Task(Tid,TContent,Pomodoro)
+        else:
+            print(f"[Task #{tid}] Empty! Please type something.")
+
+    def RemoveTask(self, tid, button, entry):
+        task_frame = button.master
+        task_frame.destroy()
+        Model.remove_Task(tid)
+        print(f"[Task #{tid}] Removed.")
+            
+    def createTask(self):
+        #render task
+        self.TaskView.renderInputTodo(self.AddTask,Model.Task)
+        
+
+        #save data
+    def TaskController(self):
+        self.createTask()
      
     def init(self):
          #LOAD CLIENT DATA
          Model.load_data()
+         print(Model.Task)
          print("init", Model.get_timer('Min'),Model.get_timer('Sec'))
 
          #RENDER TIMER
@@ -166,7 +198,8 @@ class Pomodoro(Frame):
          self.changeMode(Model.get_Mode())
          
          #self.modeControl(Model.get_Mode())
-        
+         #render task
+         self.TaskView.RenderTask(Model.Task,self.RemoveTask)
         
         # attached handler for button
          self.timerView.setSettingHandler(self.settingControl)
@@ -176,6 +209,7 @@ class Pomodoro(Frame):
          self.timerView.setModeHandler(self.modeControl)
          self.settingView.closeControl(self.settingControl)
 
-         self.TaskView.AddTaskHandler()
+         self.TaskView.AddTaskHandler(self.TaskController)
+       
 
        

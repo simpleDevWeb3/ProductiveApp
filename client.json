@@ -14,11 +14,23 @@
         }
     },
     "State": {
-        "isStart": false,
-        "CurrentMode": "LongBreak"
+        "isStart": true,
+        "CurrentMode": "Pomodoro"
     },
     "Timer": {
-        "Min": 10,
-        "Sec": 0
-    }
+        "Min": 13,
+        "Sec": 37
+    },
+    "Task": [
+        {
+            "Tid": 3,
+            "Tcontent": "2222222",
+            "Pomodoro": 1
+        },
+        {
+            "Tid": 3,
+            "Tcontent": "Pomodoro",
+            "Pomodoro": 1
+        }
+    ]
 }
