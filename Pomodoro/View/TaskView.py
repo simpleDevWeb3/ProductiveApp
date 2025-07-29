@@ -71,8 +71,17 @@ class TaskView(Frame):
                 print(f"{key}: {value}")
     
     def renderInputTodo(self,AddTask,task):
-        self.task_counter = len(task)+1
-        task_id = self.task_counter
+        currentId = None
+        i = 0
+        for t in task:
+            i += 1
+            if i == len(task): 
+                currentId = t["Tid"]
+
+        if currentId is not None:
+            task_id = int(currentId) + 1
+        else:
+            task_id = 1 
         self.AddBtn.config(state=DISABLED)
         # Create task frame
         task_frame = Frame(self.TaskList, bg="#E39090", height=50)
