@@ -1,10 +1,11 @@
 from tkinter import *
 from Pomodoro.Pomodoro import Pomodoro
-
+ 
+# Application 
 class App(Tk):
     def __init__(self):
         super().__init__() 
-        self.geometry("600x400")
+        self.geometry("500x350")
         self.title("Pomodoro Timer")
         
         
@@ -12,5 +13,6 @@ class App(Tk):
 
         self.mainloop()
 
+#Start Application
 App()
 

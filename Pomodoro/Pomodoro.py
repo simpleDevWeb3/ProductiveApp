@@ -1,34 +1,51 @@
 from tkinter import *
 from .Model import Model
-from .View.NavView import Navbar
 from .View.TimerView import TimerView
+from .View.SettingView import SettingView
+from .View.TaskView import TaskView
 
-
+# Pomodoro Initialize  
 class Pomodoro(Frame):
 
     def __init__(self,master):
         super().__init__(master,bg='#BA4949')
         #UI Container
         self.pack(expand=True, fill="both")
-        self.navbar = Navbar(self)
+    
         self.timerView = TimerView(self)
+        self.TaskView = TaskView(self)
+
         self.timerId = None  
-
+        self.overlay = Frame(self,bg="#555555")
+        self.settingView =SettingView(self.overlay)
       
-
-        # config
-       # self.state = Model.get_state()
-        #self.mode,Model.get_Mode() = self.state.get("CurrentMode"),self.state.get("isStart")  
-
-        #self.timer = Model.get_timer(self.mode)     
-        #self.min, self.sec = self.timer.get("Minute", 0), self.timer.get("Seconds", 0)
-
-        #UI Event Listener
+       
+        self.openModal = False
         self.init()
 ################################### ##################
+    ##############################
+    #Navigation Bar
+    ##############################
+    
+    
+    def settingControl(self):
+      print("Setting")
+      if not self.openModal:
+        self.overlay.place(x=0, y=0, relwidth=1, relheight=1)
+        self.settingView.toggleModal()
+        self.openModal = True
+      elif self.openModal:
+        self.overlay.place_forget()
+        self.settingView.toggleModal()
+        self.openModal = False
+
+
+    
 
 
 
+
+    ###################################
 
 
     ################################
@@ -53,6 +70,7 @@ class Pomodoro(Frame):
          self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
          self.timerView.toggleStartButtonText(Model.get_Start())
          print(Model.get_Mode())
+
     def countdown(self):
      if Model.get_Start():
         min_left = Model.get_timer("Min")
@@ -82,8 +100,6 @@ class Pomodoro(Frame):
 
         self.timerView._startBtn.config(state=DISABLED)
         self.after(300, lambda: self.timerView._startBtn.config(state=NORMAL))
-        
-    
 
         if not Model.get_Start():
             self.startTimer()
@@ -113,10 +129,15 @@ class Pomodoro(Frame):
 
         #self.mode = timerMode  
         #Model.State["CurrentMode"] = timerMode 
-
+        # setting mode base on button type
         Model.set_Mode(timerMode)
+
+        # stop timer
         self.stopTimer()
+        # reset Timer to the Mode state
         Model.resetTimer()
+
+        #Render Mode Timer
         self.changeMode(timerMode)
 
        # self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
@@ -128,19 +149,33 @@ class Pomodoro(Frame):
 
      
     def init(self):
+         #LOAD CLIENT DATA
          Model.load_data()
          print("init", Model.get_timer('Min'),Model.get_timer('Sec'))
+
+         #RENDER TIMER
          self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
         
+        #CHECK WETHER BEFORE TIMER IS START? 
          if Model.get_Start():
             print("run timer ")
             print(Model.Timer)
             self.startTimer()
 
+        # render client current mode
          self.changeMode(Model.get_Mode())
          
          #self.modeControl(Model.get_Mode())
         
         
+        # attached handler for button
+         self.timerView.setSettingHandler(self.settingControl)
+       
+          
          self.timerView.setStartHandler(self.timerControl)
          self.timerView.setModeHandler(self.modeControl)
+         self.settingView.closeControl(self.settingControl)
+
+         self.TaskView.AddTaskHandler()
+
+       

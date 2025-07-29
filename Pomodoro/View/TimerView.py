@@ -5,12 +5,12 @@ class TimerView(Frame):
         super().__init__(master, bg="#BA4949")
         self.pack(fill="both", expand=True)
 
-        TimerSection = Frame(self, bg='#c26566', width=500, height=350)
-        TimerSection.pack(expand=True)
-        TimerSection.pack_propagate(False)
+        self.TimerSection = Frame(self, bg='#c26566', width=500, height=350)
+        self.TimerSection.pack(expand=True)
+        self.TimerSection.pack_propagate(False)
 
         # Top Section
-        _Ttop = Frame(TimerSection, bg=TimerSection['bg'], height=50)
+        _Ttop = Frame(self.TimerSection, bg=self.TimerSection['bg'], height=50)
         _Ttop.pack(fill='x', pady=10)
         _Ttop.pack_propagate(False)
 
@@ -27,12 +27,12 @@ class TimerView(Frame):
 
         self.shortBreakBtn = Button(_TbtnContainer, text="Short Break",
                                     font=("Arial", 12, 'bold'), fg='white',
-                                    bg=TimerSection['bg'], padx=20, pady=10,
+                                    bg=self.TimerSection['bg'], padx=20, pady=10,
                                     borderwidth=0, highlightthickness=0)
 
         self.longBreakBtn = Button(_TbtnContainer, text="Long Break",
                                    font=("Arial", 12, 'bold'), fg='white',
-                                   bg=TimerSection['bg'], padx=20, pady=10,
+                                   bg=self.TimerSection['bg'], padx=20, pady=10,
                                    borderwidth=0, highlightthickness=0)
 
         self.pomodoroBtn.grid(row=0, column=0)
@@ -42,25 +42,34 @@ class TimerView(Frame):
      
 
         # Center Timer Display
-        _Tcenter = Frame(TimerSection, bg=TimerSection['bg'], height=200)
+        _Tcenter = Frame(self.TimerSection, bg=self.TimerSection['bg'], height=200)
         _Tcenter.pack(fill='x')
         _Tcenter.pack_propagate(False)
 
         self._lTimerLabel = Label(_Tcenter,
-                                  fg="white", bg=TimerSection['bg'],
+                                  fg="white", bg=self.TimerSection['bg'],
                                   font=("Arial", 100))
         self._lTimerLabel.pack(expand=True)
 
-        # Bottom Section
-        _Tbottom = Frame(TimerSection, bg=TimerSection['bg'], height=120)
+       # Bottom Section
+        _Tbottom = Frame(self.TimerSection, bg=self.TimerSection['bg'], height=120)
         _Tbottom.pack(fill='x', pady=(0, 40))
         _Tbottom.pack_propagate(False)
 
+        # START Button in center
         self._startBtn = Button(_Tbottom, text='START',
                                 font=("Arial", 15, "bold"),
-                                fg=TimerSection['bg'], bg='White',
+                                fg=self.TimerSection['bg'], bg='White',
                                 padx=40, pady=30)
-        self._startBtn.pack(expand=True)
+        self._startBtn.place(relx=0.5, rely=0.5, anchor='center')
+
+        # Settings Button on right side
+        self.settingBtn = Button(_Tbottom,
+                                text="⚙️",
+                                font=("Arial", 12),
+                                fg='#BA4949',
+                                padx=10, pady=10)
+        self.settingBtn.place(relx=0.8, rely=0.5, anchor='e', x=-10)
 
 
     def renderTimer(self, minutes, seconds):
@@ -75,6 +84,8 @@ class TimerView(Frame):
 
     def setStartHandler(self, handler):
         self._startBtn.config(command=handler)
+    
+ 
         
     
     def setModeHandler(self, handler):
@@ -88,3 +99,6 @@ class TimerView(Frame):
         for btn in buttons:
             btn.config(bg='#c26566')  # Reset all to default
         selected.config(bg="#E493A2")    # Highlight the clicked one
+
+    def setSettingHandler(self,handler):
+        self.settingBtn.config(command=handler)

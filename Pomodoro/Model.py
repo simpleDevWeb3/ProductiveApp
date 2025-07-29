@@ -2,6 +2,7 @@ from .Config import *  # Must define: Minute, Seconds, Min, Sec, isStart, Curren
 import json
 import os
 
+# Get client Data and Write client data
 class Model:
     Mode = {}
     State = {}

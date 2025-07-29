@@ -15,10 +15,10 @@
     },
     "State": {
         "isStart": false,
-        "CurrentMode": "Pomodoro"
+        "CurrentMode": "LongBreak"
     },
     "Timer": {
-        "Min": 25,
+        "Min": 10,
         "Sec": 0
     }
 }
