@@ -15,22 +15,11 @@
     },
     "State": {
         "isStart": false,
-        "CurrentMode": "Pomodoro"
+        "CurrentMode": "ShortBreak"
     },
     "Timer": {
-        "Min": 25,
+        "Min": 5,
         "Sec": 0
     },
-    "Task": [
-        {
-            "Tid": 6,
-            "Tcontent": "6",
-            "Pomodoro": 1
-        },
-        {
-            "Tid": 7,
-            "Tcontent": "7",
-            "Pomodoro": 1
-        }
-    ]
+    "Task": []
 }

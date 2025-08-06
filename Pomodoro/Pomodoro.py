@@ -57,10 +57,15 @@ class Pomodoro(Frame):
          #Model.State["isStart"] = True
          Model.set_Start(True)
          print(Model.get_Start(),"From start Timer")
+
          
          self.countdown()
          self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
          self.timerView.toggleStartButtonText(Model.get_Start())
+         if Model.get_Mode() == "Pomodoro":
+            self.TaskView.disRunTask(Model.get_task())
+         else:
+            self.TaskView.disSnozzing()
 
     def stopTimer(self):
          Model.set_Start(False)
@@ -70,6 +75,8 @@ class Pomodoro(Frame):
          self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
          self.timerView.toggleStartButtonText(Model.get_Start())
          print(Model.get_Mode())
+
+        
 
     def countdown(self):
      if Model.get_Start():
@@ -146,23 +153,23 @@ class Pomodoro(Frame):
        
 
     ######################
-    def AddTask(self, tid, button, entry):
+    def SaveTask(self, tid, button, entry,spinbox):
         task_text = entry.get().strip()
-
-        if task_text:
+        pomodoro_num = int(spinbox.get().strip())
+        if task_text and pomodoro_num > 0:
             print(f"[Task #{tid}] Saved: {task_text}")
             TContent = task_text
             Tid = tid
-            Pomodoro = 1 
+            Pomodoro = pomodoro_num
 
             entry.config(bg="#E39090")
             entry.config(state="readonly")
             button.config(text="Delete", command=lambda: self.RemoveTask(tid, button, entry))
-        
+            spinbox.config(state=DISABLED)
             self.TaskView.AddBtn.config(state=NORMAL)
             Model.create_Task(Tid,TContent,Pomodoro)
         else:
-            print(f"[Task #{tid}] Empty! Please type something.")
+            print(f"[Task #{tid}] Empty! Please type something or Pomodor must > 0.")
 
     def RemoveTask(self, tid, button, entry):
         task_frame = button.master
@@ -172,7 +179,7 @@ class Pomodoro(Frame):
             
     def createTask(self):
         #render task
-        self.TaskView.renderInputTodo(self.AddTask,Model.Task)
+        self.TaskView.renderInputTodo(self.SaveTask,Model.Task)
         
 
         #save data

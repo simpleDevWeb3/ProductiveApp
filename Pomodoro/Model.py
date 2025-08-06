@@ -18,7 +18,7 @@ class Model:
                 Model.Timer = data.get("Timer", {})
                 Model.Task = data.get("Task",[])
         else:
-            print("❌ File does not exist. Using defaults.")
+            print(" File does not exist. Using defaults.")
             # Default values for first-time users
             Model.Mode = {
                 "Pomodoro": {Minute: 25, Seconds: 0},
@@ -33,13 +33,14 @@ class Model:
                 {
                     "Tid":1,
                     "Tcontent":"Sleep",
-                    "Pomodoro":1
+                    "Pomodoro":1,
+                    "Sec_Left": 200
                 },
 
                 {
                     "Tid":2,
                     "Tcontent":"Wakeup",
-                    "Pomodoro":2
+                    "Sec_Left":200
                 }
             ]
             Model.resetTimer()
@@ -61,9 +62,10 @@ class Model:
         Model.Task.append(
             {
                 "Tid": new_id,
-                "Tcontent": Task,        # Empty title by default (user input later)
-                "Pomodoro": pomodoro  # Optional field
-            } )
+                "Tcontent": Task,     
+                "Pomodoro": pomodoro,
+                "Sec_Left": Model.set_PomodoroToSec(pomodoro)
+            })
         Model.save_data()
     
     @staticmethod
@@ -83,6 +85,13 @@ class Model:
     @staticmethod
     def get_timer(key):
         return Model.Timer.get(key, 0)
+    @staticmethod
+    def set_PomodoroToSec(pomodoro):
+       Min = Model.Mode["Pomodoro"]["Minute"]
+       Sec = Model.Mode["Pomodoro"]["Seconds"]
+       totalSec = pomodoro * ((Min * 60) + Sec)
+       return totalSec
+               
 
     @staticmethod
     def set_Timer(key, val):
@@ -105,6 +114,9 @@ class Model:
     @staticmethod
     def get_state():
         return Model.State
+    @staticmethod
+    def get_task():
+        return Model.Task
 
     @staticmethod
     def get_Mode():
@@ -124,3 +136,5 @@ class Model:
     def set_Start(start):
         Model.State[isStart] = start
         Model.save_data()
+
+   
