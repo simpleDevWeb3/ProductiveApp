@@ -14,7 +14,7 @@ class TaskView(Frame):
         self.currentTaskSection = Frame(self.TaskSection,bg="#BA4949")
         self.currentTaskSection.pack(fill='x',padx=20,pady=1)
 
-        self.currentTask = Label(self.currentTaskSection, text="Time To Study#1", fg="white", bg="#BA4949", font=("Arial", 20, "bold"))
+        self.currentTask = Label(self.currentTaskSection, text="Welcome Back!", fg="white", bg="#BA4949", font=("Arial", 20, "bold"))
         self.currentTask.pack(anchor=CENTER)
 
         # Header Section for title + add button
@@ -104,6 +104,11 @@ class TaskView(Frame):
             task_id = 1 
 
         return task_id
+    
+    def clear_task(self):
+        for widget in self.TaskList.winfo_children():
+            widget.destroy()
+
 
     def renderInputTodo(self,AddTask,task):
 
@@ -142,8 +147,12 @@ class TaskView(Frame):
     def disRunTask(self,data):
         currentTask = data[0]["Tcontent"]
         self.currentTask.config(text=currentTask)
+        
     def disSnozzing(self):
         self.currentTask.config(text="Snozzing Time!")
+    def renderMsg(self,msg):
+        self.currentTask.config(text=msg)
+
     def RenderTask(self,data,addDelete):
      
          for task in data:

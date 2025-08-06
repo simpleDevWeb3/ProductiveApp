@@ -77,6 +77,13 @@ class Pomodoro(Frame):
          print(Model.get_Mode())
 
         
+    def taskDone(self):
+        Model.remove_Task(Model.getFirstTid())
+        print("Before",Model.Task)
+        Model.load_data()
+        print("After",Model.Task)
+        self.TaskView.clear_task()
+        self.TaskView.RenderTask(Model.Task,self.RemoveTask)
 
     def countdown(self):
      if Model.get_Start():
@@ -88,6 +95,16 @@ class Pomodoro(Frame):
             self.stopTimer()
             Model.resetTimer()
             self.timerView.renderTimer(Model.get_timer('Min'), Model.get_timer('Sec'))
+
+            if Model.get_Mode() == "Pomodoro":
+                #self.taskDone()
+                self.modeControl("ShortBreak")
+                self.TaskView.renderMsg("Let's Take a Break!")
+            elif Model.get_Mode() == "ShortBreak" or "LongBreak":
+                self.modeControl("Pomodoro")
+                self.TaskView.renderMsg("Let's Focus Now!")
+
+
             return  # Timer ends
         if sec_left > 0:
             Model.decrease_Timer("Sec", 1)
@@ -99,7 +116,7 @@ class Pomodoro(Frame):
 
         # Update timer view
         self.timerView.renderTimer(Model.get_timer('Min'), Model.get_timer('Sec'))
-        self.timerId = self.after(1000, self.countdown)
+        self.timerId = self.after(1, self.countdown)
 
     def timerControl(self):
         #Timer Mode
@@ -121,6 +138,8 @@ class Pomodoro(Frame):
     
     def changeMode(self,timerMode):
         Model.set_Mode(timerMode)
+        print(timerMode)
+        print(Model.get_timer('Min'))
         self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
 
          # Highlight the right button
@@ -146,6 +165,11 @@ class Pomodoro(Frame):
 
         #Render Mode Timer
         self.changeMode(timerMode)
+        if len(Model.get_task()) == 0:
+            if timerMode == "Pomodoro":
+                self.TaskView.renderMsg("Let's Start Focus!")
+            else:
+                self.TaskView.renderMsg("Let's Take A Break!") 
 
        # self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
             

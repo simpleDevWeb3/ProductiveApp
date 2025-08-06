@@ -28,6 +28,7 @@ class Model:
             Model.State = {
                 isStart: False,
                 CurrentMode: "Pomodoro"
+                
             }
             Model.Task = [
                 {
@@ -40,6 +41,7 @@ class Model:
                 {
                     "Tid":2,
                     "Tcontent":"Wakeup",
+                    "Pomodoro":1,
                     "Sec_Left":200
                 }
             ]
@@ -70,6 +72,7 @@ class Model:
     
     @staticmethod
     def remove_Task(selected_id):
+        print(selected_id)
         deleteItem  = None
         for task in Model.Task:
             if task["Tid"] == selected_id:
@@ -82,6 +85,10 @@ class Model:
         else:
             print("Not found task")
 
+    @staticmethod
+    def getFirstTid():
+        return Model.Task[0]["Tid"]
+    
     @staticmethod
     def get_timer(key):
         return Model.Timer.get(key, 0)
