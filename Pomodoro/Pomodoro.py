@@ -98,13 +98,23 @@ class Pomodoro(Frame):
 
             if Model.get_Mode() == "Pomodoro":
                 #self.taskDone()
+                if(len(Model.Task)>0 ):
+                    print("counting")
+                    Model.set_Count(+1)
+                    self.TaskView.clear_task()
+                    self.TaskView.RenderTask(Model.Task,self.RemoveTask)
+                    
+                    if Model.Task[0]["Pomodoro"] == Model.Task[0]["Count"]:
+                        self.taskDone()
+                        
                 self.modeControl("ShortBreak")
                 self.TaskView.renderMsg("Let's Take a Break!")
+                
             elif Model.get_Mode() == "ShortBreak" or "LongBreak":
                 self.modeControl("Pomodoro")
                 self.TaskView.renderMsg("Let's Focus Now!")
 
-
+           
             return  # Timer ends
         if sec_left > 0:
             Model.decrease_Timer("Sec", 1)
@@ -165,11 +175,11 @@ class Pomodoro(Frame):
 
         #Render Mode Timer
         self.changeMode(timerMode)
-        if len(Model.get_task()) == 0:
-            if timerMode == "Pomodoro":
-                self.TaskView.renderMsg("Let's Start Focus!")
-            else:
-                self.TaskView.renderMsg("Let's Take A Break!") 
+   
+        if timerMode == "Pomodoro":
+            self.TaskView.renderMsg("Let's Start Focus!")
+        else:
+            self.TaskView.renderMsg("Let's Take A Break!") 
 
        # self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
             
@@ -177,7 +187,7 @@ class Pomodoro(Frame):
        
 
     ######################
-    def SaveTask(self, tid, button, entry,spinbox):
+    def SaveTask(self, tid,frame, button, entry,spinbox):
         task_text = entry.get().strip()
         pomodoro_num = int(spinbox.get().strip())
         if task_text and pomodoro_num > 0:
@@ -185,13 +195,16 @@ class Pomodoro(Frame):
             TContent = task_text
             Tid = tid
             Pomodoro = pomodoro_num
-
-            entry.config(bg="#E39090")
-            entry.config(state="readonly")
-            button.config(text="Delete", command=lambda: self.RemoveTask(tid, button, entry))
-            spinbox.config(state=DISABLED)
-            self.TaskView.AddBtn.config(state=NORMAL)
             Model.create_Task(Tid,TContent,Pomodoro)
+            frame.destroy()
+            entry.destroy()
+            spinbox.destroy()
+            button.destroy()
+           
+            self.TaskView.Render(Model.Task[-1],self.RemoveTask)
+            self.TaskView.AddBtn.config(state="normal")    
+          
+           
         else:
             print(f"[Task #{tid}] Empty! Please type something or Pomodor must > 0.")
 

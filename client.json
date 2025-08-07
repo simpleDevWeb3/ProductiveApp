@@ -15,18 +15,11 @@
     },
     "State": {
         "isStart": false,
-        "CurrentMode": "ShortBreak"
+        "CurrentMode": "LongBreak"
     },
     "Timer": {
-        "Min": 5,
+        "Min": 10,
         "Sec": 0
     },
-    "Task": [
-        {
-            "Tid": 1,
-            "Tcontent": "111",
-            "Pomodoro": 1,
-            "Sec_Left": 1500
-        }
-    ]
+    "Task": []
 }

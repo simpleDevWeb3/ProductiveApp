@@ -59,6 +59,7 @@ class Model:
                 "Timer": Model.Timer,
                 "Task": Model.Task  
             }, file, indent=4)
+
     @staticmethod
     def create_Task(new_id,Task,pomodoro):
         Model.Task.append(
@@ -66,7 +67,8 @@ class Model:
                 "Tid": new_id,
                 "Tcontent": Task,     
                 "Pomodoro": pomodoro,
-                "Sec_Left": Model.set_PomodoroToSec(pomodoro)
+                "Count":0,
+                
             })
         Model.save_data()
     
@@ -79,7 +81,7 @@ class Model:
                 deleteItem = task
                 print(task)
         if deleteItem:
-            print(deleteItem)
+            print("delete", deleteItem)
             Model.Task.remove(deleteItem)
             Model.save_data()
         else:
@@ -92,14 +94,13 @@ class Model:
     @staticmethod
     def get_timer(key):
         return Model.Timer.get(key, 0)
-    @staticmethod
-    def set_PomodoroToSec(pomodoro):
-       Min = Model.Mode["Pomodoro"]["Minute"]
-       Sec = Model.Mode["Pomodoro"]["Seconds"]
-       totalSec = pomodoro * ((Min * 60) + Sec)
-       return totalSec
-               
 
+
+    
+    @staticmethod
+    def set_Count(val):
+        Model.Task[0]["Count"]+= val
+        Model.save_data()
     @staticmethod
     def set_Timer(key, val):
         Model.Timer[key] = val

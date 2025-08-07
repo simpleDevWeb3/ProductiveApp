@@ -62,20 +62,18 @@ class TaskView(Frame):
         task_frame.pack(fill=X, pady=5)
         task_frame.pack_propagate(False)
 
-        task_entry = Entry(task_frame, font=("Arial", 12), width=30)
-        task_entry.insert(0, data["Tcontent"]) 
-        task_entry.config(state="readonly")     
+        task_entry = Label(task_frame, font=("Arial", 12), width=30, text=data["Tcontent"], fg="white",bg="#E39090")
+   
         task_entry.pack(side=LEFT, padx=10, pady=10)
 
-        pomodoro_entry = Spinbox(
+        pomodoro_entry = Label(
           task_frame, 
-          from_=0, to=10,
+          text=f"{data["Count"]}/{data["Pomodoro"]}",
           width=5,
-          font=("Arial", 10)
+          fg="white",
+          bg="#E39090",
          )
-        pomodoro_entry.delete(0, "end") 
-        pomodoro_entry.insert(0, data["Pomodoro"]) 
-        pomodoro_entry.config(state="disabled")
+
         pomodoro_entry.pack(side=LEFT,padx=8,pady=10)
 
         delete_btn = Button(task_frame,
@@ -104,7 +102,7 @@ class TaskView(Frame):
             task_id = 1 
 
         return task_id
-    
+    #function to clear ui inside task list
     def clear_task(self):
         for widget in self.TaskList.winfo_children():
             widget.destroy()
@@ -141,7 +139,7 @@ class TaskView(Frame):
                         font=("Arial", 10),
                         bg="#D96F6F",
                         fg="white")
-        save_btn.config(command=lambda tid=task_id, btn=save_btn, entry=task_entry ,pomodoro= pomodoro_entry : AddTask(tid, btn, entry,pomodoro))
+        save_btn.config(command=lambda tid=task_id, btn=save_btn, entry=task_entry ,frame= task_frame, pomodoro= pomodoro_entry : AddTask(tid,frame, btn, entry,pomodoro))
         save_btn.pack(side=RIGHT, padx=10)
         
     def disRunTask(self,data):
