@@ -47,6 +47,7 @@ class TaskView(Frame):
         self.TaskList = Frame(self.TaskSection, bg="#BA4949")
         self.TaskList.pack(fill='both', expand=True, padx=20)
 
+       
         #init Id for btn
         self.task_counter = 0 
 
@@ -144,7 +145,8 @@ class TaskView(Frame):
         
     def disRunTask(self,data):
         currentTask = data[0]["Tcontent"]
-        self.currentTask.config(text=currentTask)
+        index = data[0]["Tid"]
+        self.currentTask.config(text=f"#{index} {currentTask}")
         
     def disSnozzing(self):
         self.currentTask.config(text="Snozzing Time!")
@@ -157,6 +159,6 @@ class TaskView(Frame):
             print(task)
             self.Render(task,addDelete)
             self.task_counter+=1
-         
-            
+
+ 
                

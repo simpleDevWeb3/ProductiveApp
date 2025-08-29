@@ -35,14 +35,16 @@ class Model:
                     "Tid":1,
                     "Tcontent":"Sleep",
                     "Pomodoro":1,
-                    "Sec_Left": 200
+                    "Sec_Left": 200,
+                    "Count":0
                 },
 
                 {
                     "Tid":2,
                     "Tcontent":"Wakeup",
                     "Pomodoro":1,
-                    "Sec_Left":200
+                    "Sec_Left":200,
+                    "Count":0
                 }
             ]
             Model.resetTimer()
@@ -67,7 +69,7 @@ class Model:
                 "Tid": new_id,
                 "Tcontent": Task,     
                 "Pomodoro": pomodoro,
-                "Count":0,
+                "Count":1,
                 
             })
         Model.save_data()
@@ -107,6 +109,11 @@ class Model:
         Model.save_data()
 
     @staticmethod
+    def set_TimerMode(key,val):
+        Model.Mode[key]["Minute"] = int(val)
+        Model.save_data()
+
+    @staticmethod
     def decrease_Timer(key, val):
         Model.Timer[key] -= val
         Model.save_data()
@@ -126,6 +133,9 @@ class Model:
     def get_task():
         return Model.Task
 
+    @staticmethod
+    def get_timerMode(mode):
+        return Model.Mode.get(mode)['Minute']
     @staticmethod
     def get_Mode():
         return Model.State.get(CurrentMode)

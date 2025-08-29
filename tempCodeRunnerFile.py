@@ -1,1 +1,1 @@
-        self.Main=Pomodoro(self)
+l

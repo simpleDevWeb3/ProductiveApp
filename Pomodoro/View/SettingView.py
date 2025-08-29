@@ -69,18 +69,19 @@ class SettingView(Frame):
           width=5,
           font=("Arial", 20)
          )
-      self.inputLongBreak =Spinbox(
-          self.TimerSection, 
-          from_=0, to=100,
-          width=5,
-          font=("Arial", 20)
-         )
       self.inputShortBreak=Spinbox(
           self.TimerSection, 
           from_=0, to=100,
           width=5,
           font=("Arial", 20)
          )
+      self.inputLongBreak =Spinbox(
+          self.TimerSection, 
+          from_=0, to=100,
+          width=5,
+          font=("Arial", 20)
+         )
+     
 
       self.Title.place(x=20,y=10,anchor=NW)
       self.closeBtn.place(relx=1.0, rely=0.0, anchor=NE) 
@@ -95,18 +96,19 @@ class SettingView(Frame):
          padx=5, 
          pady=5
       )
-      self.LongLabel.grid(
+      self.ShortLabel.grid(
          row=1, 
          column=2, 
          padx=5, 
          pady=5
       )
-      self.ShortLabel.grid(
+      self.LongLabel.grid(
          row=1, 
          column=3, 
          padx=5, 
          pady=5
       )
+   
       self.inputPomodoro.grid(
          row=2, 
          column=1, 
@@ -137,22 +139,61 @@ class SettingView(Frame):
       )
       
     
-    def show(self):
+    def show(self,pomodoro,shortBreak,longBreak):
         # Show and center the frame
         self.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.visible = True
 
+        self.inputLongBreak.delete(0, "end")
+        self.inputLongBreak.insert(0,longBreak)
+
+        self.inputShortBreak.delete(0, "end")
+        self.inputShortBreak.insert(0,shortBreak)
+
+        self.inputPomodoro.delete(0, "end")
+        self.inputPomodoro.insert(0,pomodoro)
+        print(pomodoro,shortBreak,longBreak)
+
+       
+
     def hide(self):
         # Show and center the frame
+        
         self.place_forget()
         self.visible = False
 
-    def toggleModal(self):
+    def toggleModal(self,pomodoro,shortBreak,longBreak):
         if not self.visible:
-          self.show()
+          self.show(pomodoro,shortBreak,longBreak)
         elif self.visible:
           self.hide()
 
     def closeControl(self,handler):
        self.closeBtn.config(command=handler)
+   
+   
+    def get_timer(self,handler):
+      pomodoro = self.inputPomodoro.get()
+      shortbreak = self.inputShortBreak.get()
+      longbreak = self.inputLongBreak.get()
+      handler(pomodoro, shortbreak, longbreak)
+   
+    def reset_timer(self,handler):
+      self.inputPomodoro.delete(0, "end")   # clear any old text
+      self.inputPomodoro.insert(0, "25")   # set new text
+
+      self.inputShortBreak.delete(0, "end")   # clear any old text
+      self.inputShortBreak.insert(0, "5")   # set new text
+
+      self.inputLongBreak.delete(0, "end")   # clear any old text
+      self.inputLongBreak.insert(0, "10")   # set new text
+
+      self.get_timer(handler)
+
+    def saveControl(self,handler):
+      self.submitBtn.config(command=lambda: self.get_timer(handler))
+
+   
+    def resetControl(self,handler):
+       self.resetBtn.config(command=lambda: self.reset_timer(handler))
 

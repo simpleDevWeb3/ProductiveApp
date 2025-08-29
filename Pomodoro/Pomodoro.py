@@ -23,6 +23,7 @@ class Pomodoro(Frame):
         self.openModal = False
         self.init()
 ################################### ##################
+ 
     ##############################
     #Navigation Bar
     ##############################
@@ -32,15 +33,24 @@ class Pomodoro(Frame):
       print("Setting")
       if not self.openModal:
         self.overlay.place(x=0, y=0, relwidth=1, relheight=1)
-        self.settingView.toggleModal()
+        self.settingView.toggleModal(Model.get_timerMode("Pomodoro"),Model.get_timerMode("ShortBreak"),Model.get_timerMode("LongBreak"))
         self.openModal = True
+
       elif self.openModal:
         self.overlay.place_forget()
-        self.settingView.toggleModal()
+        self.settingView.toggleModal(Model.get_timerMode("Pomodoro"),Model.get_timerMode("ShortBreak"),Model.get_timerMode("LongBreak"))
         self.openModal = False
 
 
+    def setTimer (self,pomodoro,shortBreak,longBreak):
+        Model.set_TimerMode("Pomodoro",pomodoro)
+        Model.set_TimerMode("ShortBreak",shortBreak)
+        Model.set_TimerMode("LongBreak",longBreak)
+        Model.resetTimer()
+        self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
     
+        
+        
 
 
 
@@ -155,10 +165,13 @@ class Pomodoro(Frame):
          # Highlight the right button
         if Model.get_Mode() == "Pomodoro":
             self.timerView.highlightModeButton(self.timerView.pomodoroBtn)
+       
         elif Model.get_Mode() == "ShortBreak":
             self.timerView.highlightModeButton(self.timerView.shortBreakBtn)
+  
         elif Model.get_Mode() == "LongBreak":
             self.timerView.highlightModeButton(self.timerView.longBreakBtn)
+            
 
     def modeControl(self,timerMode):
         print(timerMode)
@@ -218,7 +231,8 @@ class Pomodoro(Frame):
         #render task
         self.TaskView.renderInputTodo(self.SaveTask,Model.Task)
         
-
+ 
+            
         #save data
     def TaskController(self):
         self.createTask()
@@ -252,6 +266,8 @@ class Pomodoro(Frame):
          self.timerView.setStartHandler(self.timerControl)
          self.timerView.setModeHandler(self.modeControl)
          self.settingView.closeControl(self.settingControl)
+         self.settingView.saveControl(self.setTimer)
+         self.settingView.resetControl(self.setTimer)
 
          self.TaskView.AddTaskHandler(self.TaskController)
        
