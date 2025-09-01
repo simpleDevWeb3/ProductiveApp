@@ -1,7 +1,7 @@
 {
     "Mode": {
         "Pomodoro": {
-            "Minute": 5,
+            "Minute": 25,
             "Seconds": 0
         },
         "ShortBreak": {
@@ -15,64 +15,42 @@
     },
     "State": {
         "isStart": false,
-        "CurrentMode": "ShortBreak"
+        "CurrentMode": "Pomodoro"
     },
     "Timer": {
-        "Min": 5,
+        "Min": 25,
         "Sec": 0
     },
-    "Task": [
-        {
-            "Tid": 3,
-            "Tcontent": "arm",
-            "Pomodoro": 3,
-            "Count": 0
-        }
-    ],
+    "Task": [],
     "Folder": [
         {
             "Fid": 1,
-            "FolderName": "Morning Routine",
+            "FolderName": "exercise",
             "Tasks": [
                 {
-                    "Tid": 1,
-                    "Tcontent": "Sleep",
-                    "Pomodoro": 1,
-                    "Sec_Left": 200,
+                    "Tid": 2,
+                    "Tcontent": "22",
+                    "Pomodoro": 3,
                     "Count": 0
                 },
                 {
-                    "Tid": 2,
-                    "Tcontent": "Wakeup",
-                    "Pomodoro": 1,
-                    "Sec_Left": 200,
+                    "Tid": 4,
+                    "Tcontent": "333",
+                    "Pomodoro": 5,
+                    "Count": 0
+                },
+                {
+                    "Tid": 5,
+                    "Tcontent": "44444",
+                    "Pomodoro": 3,
                     "Count": 0
                 }
             ]
         },
         {
             "Fid": 2,
-            "FolderName": "Gym",
-            "Tasks": [
-                {
-                    "Tid": 1,
-                    "Tcontent": "leg",
-                    "Pomodoro": 2,
-                    "Count": 0
-                },
-                {
-                    "Tid": 2,
-                    "Tcontent": "hand",
-                    "Pomodoro": 2,
-                    "Count": 0
-                },
-                {
-                    "Tid": 3,
-                    "Tcontent": "arm",
-                    "Pomodoro": 3,
-                    "Count": 0
-                }
-            ]
+            "FolderName": "wwww",
+            "Tasks": []
         }
     ]
 }

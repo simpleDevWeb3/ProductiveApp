@@ -119,6 +119,30 @@ class Model:
                     "Count":0,
                 }
             )
+            Model.save_data()
+
+    def f_remove_task(Folder:dict, Tid):
+        F = Folder
+        delete_item  =  None
+        select_folder = None
+        print("delete task: " , Tid)
+
+        for f in Model.Folder:
+            if F["Fid"] == f["Fid"]:
+              select_folder = f
+              break
+
+        for t in select_folder["Tasks"]:
+            if t["Tid"] == Tid:
+              delete_item = t
+              break
+    
+        if delete_item:
+           select_folder["Tasks"].remove(delete_item)
+           Model.save_data()
+        return
+
+
 
     @staticmethod
     def create_Task(Task,pomodoro):
@@ -225,8 +249,11 @@ class Model:
     @staticmethod         
     def create_folder(FolderName):
         #get last folder id 
-        last_folder = Model.Folder[-1]
-        new_id = last_folder["Fid"] + 1
+        if len(Model.Folder)> 0:
+            last_folder = Model.Folder[-1]
+            new_id = last_folder["Fid"] + 1
+        else:
+            new_id = 1
 
         Model.Folder.append(
             {

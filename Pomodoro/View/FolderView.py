@@ -29,23 +29,16 @@ class FolderView(Frame):
       
 
 
-        # Submit button
-        self.submitBtn = Button(
-            self,
-            text="Ok",
-            fg="White",
-            padx=20,
-            bg="green",
-            pady=10        
-        )
-        self.submitBtn.place(relx=0.9, rely=0.9, anchor="se")
+    
 
-    def renderItem(self, i, f,addLoad,addDelete,addCreate,addCreateTask):
+    def renderItem(self, i, f,addLoad,addDelete,addCreate,addCreateTask,remove_task):
         #accept function
         Label(self.table, text=str(i), bg="white", font=("Arial", 11)).grid(row=i, column=0, sticky="w", padx=10, pady=5)
         Label(self.table, text=f["FolderName"], bg="white", font=("Arial", 11)).grid(row=i, column=1, sticky="w", padx=10, pady=5)
+
+        #Open btn
         Button(self.table, text="Open", padx=10,
-               command=lambda: self.renderDetail(f,addLoad,addDelete,addCreate,addCreateTask)).grid(row=i, column=2, sticky="w", padx=10, pady=5)
+               command=lambda: self.renderDetail(f,addLoad,addDelete,addCreate,addCreateTask,remove_task)).grid(row=i, column=2, sticky="w", padx=10, pady=5)
       
         #load btn
         load_btn = Button(
@@ -98,6 +91,7 @@ class FolderView(Frame):
         Add_button.grid(row=i, column=2, padx=10, pady=5)
 
     def task_input(self,folder,Fid, row, add_task=None):
+       
         #index
         index_label = Label(self.table, text=row, bg="white", font=("Arial", 11))
         index_label.grid(row=row, column=0,padx=10, pady=5,sticky="w")
@@ -123,10 +117,8 @@ class FolderView(Frame):
             bg="lightgreen"
         )
         save_btn.grid(row=row, column=3, padx=10, pady=5)
-
+        
         # Hook save button to handler
-
-     
         save_btn.config(
             command=lambda: add_task(
                 folder,
@@ -154,7 +146,7 @@ class FolderView(Frame):
      
       
 
-    def renderDetail(self, folder,handler,handler2,handler3,create_task):
+    def renderDetail(self, folder,handler,handler2,handler3,create_task,del_task):
         # clear table first
         for widget in self.table.winfo_children():
             widget.destroy()
@@ -177,27 +169,35 @@ class FolderView(Frame):
             command=lambda: create_task(folder,folder["Fid"],len(folder.get("Tasks", [])) + 1)
         ).grid(row=0, column=4, sticky="w")
 
-
+        r = 0
         # Render tasks
         if(folder.get("Tasks", [])):
             for i, task in enumerate(folder.get("Tasks", []), start=1):
-                Label(self.table, text=str(i), bg="white", font=("Arial", 11)).grid(row=i, column=0, sticky="w", padx=10, pady=5)
-                Label(self.table, text=task.get("Tcontent", ""), bg="white", font=("Arial", 11)).grid(row=i, column=1, sticky="w", padx=10, pady=5)
-                Label(self.table, text=task.get("Pomodoro", ""), bg="white", font=("Arial", 11)).grid(row=i, column=2, sticky="w", padx=10, pady=5)
-        else:
-          i = 1
-
+                print(i)
+                self.renderTask(i,folder,task,del_task)
+                r = i
         # Back button 
-        Button(self.table, text="Back", padx=10,
-                command=lambda: self.renderList(self.lastFolders,handler,handler2,handler3,create_task)
-        ).grid(row=i+1, column=0, columnspan=4, pady=15)
+        Back_btn = Button(self, text="Back", padx=10 )
+
+        Back_btn.config(command=lambda b=Back_btn: (
+            b.destroy(),
+            self.renderList(self.lastFolders, handler, handler2, handler3, create_task, del_task)
+        ))
+        Back_btn.place(relx=0.9, rely=0.9, anchor="se")  # bottom-right
 
       
     
 
    
-
-    def renderList(self, folders,handler,handler2,handler3,handler4):
+    def renderTask(self,i,folder,task,del_task):
+        Label(self.table, text=str(i), bg="white", font=("Arial", 11)).grid(row=i, column=0, sticky="w", padx=10, pady=5)
+        Label(self.table, text=task.get("Tcontent", ""), bg="white", font=("Arial", 11)).grid(row=i, column=1, sticky="w", padx=10, pady=5)
+        Label(self.table, text=task.get("Pomodoro", ""), bg="white", font=("Arial", 11)).grid(row=i, column=2, sticky="w", padx=10, pady=5)
+        del_btn = Button(self.table, text="Delete", bg="white", font=("Arial", 11))
+        del_btn.config(command=lambda t=task:del_task(folder,t))
+        del_btn.grid(row=i, column=3, sticky="w", padx=10, pady=5)
+        
+    def renderList(self, folders,handler,handler2,handler3,handler4,handler5):
         #get load function from controller 
 
         self.lastFolders = folders  # store for back button
@@ -210,7 +210,7 @@ class FolderView(Frame):
 
         # Populate rows
         for i, f in enumerate(folders, start=1):
-            self.renderItem(i, f,handler,handler2,handler3,handler4)
+            self.renderItem(i, f,handler,handler2,handler3,handler4,handler5)
             self.Fid += 1
     
     def clear_folder(self):
@@ -221,18 +221,18 @@ class FolderView(Frame):
 
     
 
-    def show(self, folders,handler,handler2,handler3,handler4):
+    def show(self, folders,handler,handler2,handler3,handler4,handler5):
         self.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.visible = True
-        self.renderList(folders,handler,handler2,handler3,handler4)
+        self.renderList(folders,handler,handler2,handler3,handler4,handler5)
 
     def hide(self):
         self.place_forget()
         self.visible = False
 
-    def toggleModal(self, folders,handler,handler2,handler3,handler4):
+    def toggleModal(self, folders,handler,handler2,handler3,handler4,handler5):
         if not self.visible:
-            self.show(folders,handler,handler2,handler3,handler4)
+            self.show(folders,handler,handler2,handler3,handler4,handler5)
         else:
             self.hide()
 

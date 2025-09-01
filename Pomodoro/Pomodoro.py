@@ -98,13 +98,13 @@ class Pomodoro(Frame):
       #render modal
       if not self.openModal:
         self.overlay.place(x=0, y=0, relwidth=1, relheight=1)
-        self.FolderView.toggleModal(Model.get_folder(),self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl)
+        self.FolderView.toggleModal(Model.get_folder(),self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl,self.F_delTaskControl)
         self.openModal = True
 
       #close modal
       elif self.openModal:
         self.overlay.place_forget()
-        self.FolderView.toggleModal(Model.get_folder(),self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl)
+        self.FolderView.toggleModal(Model.get_folder(),self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl,self.F_delTaskControl)
         self.openModal = False
 
     def delFolder(self,Fid):
@@ -114,7 +114,7 @@ class Pomodoro(Frame):
        self.FolderView.clear_folder()
 
        #render back view
-       self.FolderView.renderList(Model.get_folder(),self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl)       
+       self.FolderView.renderList(Model.get_folder(),self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl,self.F_delTaskControl)       
 
        #Msg
        self.FolderView.popout(f"Folder #[{S_Folder["FolderName"]}] deleted!")
@@ -132,7 +132,7 @@ class Pomodoro(Frame):
         self.FolderView.clear_folder()
 
         #rerender view
-        self.FolderView.renderList(Model.get_folder(),self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl)
+        self.FolderView.renderList(Model.get_folder(),self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl,self.F_delTaskControl)
 
 
 
@@ -161,10 +161,20 @@ class Pomodoro(Frame):
         self.FolderView.clear_folder()
 
         #rerender view
-        self.FolderView.renderDetail(Folder,self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl)
+        self.FolderView.renderDetail(Folder,self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl,self.F_delTaskControl)
 
     def F_saveTaskControl(self,folder,Fid,row):
+        
         self.FolderView.task_input(folder,Fid,row,self.F_createTask)
+    
+    def F_delTaskControl(self,Folder,Task):
+        Tid = Task["Tid"]
+        #delete task data
+        Model.f_remove_task(Folder,Tid)
+        #clear view
+        self.FolderView.clear_folder()
+        #rerender view
+        self.FolderView.renderDetail(Folder,self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl,self.F_delTaskControl)
 
     def setTimer (self,pomodoro,shortBreak,longBreak):
         Model.set_TimerMode("Pomodoro",pomodoro)
