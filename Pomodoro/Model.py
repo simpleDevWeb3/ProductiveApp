@@ -98,8 +98,41 @@ class Model:
                 "Folder":Model.Folder
             }, file, indent=4)
 
+    def f_create_Task(Folder,Task,pomodoro):
+        print("Ongoing create: ", Task)
+        F = Folder
+        for f in Model.Folder:
+         if F["Fid"] == f["Fid"]:
+            if len(F["Tasks"]) > 0:
+             print("Creating....")
+             last_task = F["Tasks"][-1]
+             new_id = last_task["Tid"] + 1
+            else:
+             print("Creating.... first task")
+             new_id = 1
+
+            f["Tasks"].append(
+                {
+                    "Tid": new_id,
+                    "Tcontent": Task,     
+                    "Pomodoro": pomodoro,
+                    "Count":0,
+                }
+            )
+
     @staticmethod
-    def create_Task(new_id,Task,pomodoro):
+    def create_Task(Task,pomodoro):
+        print("Ongoing create: ", Task)
+
+        if len(Model.Task) > 0:
+         print("Creating....")
+         last_task = Model.Task[-1]
+         new_id = last_task["Tid"] + 1
+        else:
+         print("Creating.... first task")
+         new_id = 1
+     
+
         Model.Task.append(
             {
                 "Tid": new_id,
@@ -166,6 +199,7 @@ class Model:
     def get_folder():
         return Model.Folder 
     
+    @staticmethod
     def get_s_folder(Fid):
         SelectedFolder = None
         for Folder in Model.Folder:
@@ -175,6 +209,7 @@ class Model:
                 return SelectedFolder
         return ""
     
+    @staticmethod
     def remove_folder(Fid):
         print("Delete data: ", Fid)
         deleteItem  =  Model.get_s_folder(Fid)
@@ -186,6 +221,21 @@ class Model:
             return deleteItem
         else:
             print("Not found task")
+   
+    @staticmethod         
+    def create_folder(FolderName):
+        #get last folder id 
+        last_folder = Model.Folder[-1]
+        new_id = last_folder["Fid"] + 1
+
+        Model.Folder.append(
+            {
+                "Fid": new_id,
+                "FolderName":FolderName,
+                "Tasks":[]
+                
+            })
+        Model.save_data()
 
     @staticmethod
     def get_state():

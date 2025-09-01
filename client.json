@@ -1,7 +1,7 @@
 {
     "Mode": {
         "Pomodoro": {
-            "Minute": 25,
+            "Minute": 5,
             "Seconds": 0
         },
         "ShortBreak": {
@@ -15,17 +15,17 @@
     },
     "State": {
         "isStart": false,
-        "CurrentMode": "Pomodoro"
+        "CurrentMode": "ShortBreak"
     },
     "Timer": {
-        "Min": 25,
+        "Min": 5,
         "Sec": 0
     },
     "Task": [
         {
-            "Tid": 1,
-            "Tcontent": "Coding",
-            "Pomodoro": 2,
+            "Tid": 3,
+            "Tcontent": "arm",
+            "Pomodoro": 3,
             "Count": 0
         }
     ],
@@ -52,13 +52,24 @@
         },
         {
             "Fid": 2,
-            "FolderName": "Work",
+            "FolderName": "Gym",
             "Tasks": [
                 {
-                    "Tid": 3,
-                    "Tcontent": "Coding",
+                    "Tid": 1,
+                    "Tcontent": "leg",
                     "Pomodoro": 2,
-                    "Sec_Left": 300,
+                    "Count": 0
+                },
+                {
+                    "Tid": 2,
+                    "Tcontent": "hand",
+                    "Pomodoro": 2,
+                    "Count": 0
+                },
+                {
+                    "Tid": 3,
+                    "Tcontent": "arm",
+                    "Pomodoro": 3,
                     "Count": 0
                 }
             ]
