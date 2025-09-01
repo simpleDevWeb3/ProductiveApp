@@ -1,5 +1,5 @@
 from tkinter import *
-
+from .NotifyView import NotifyView
 
 
 class FolderView(Frame):
@@ -9,7 +9,7 @@ class FolderView(Frame):
         self.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.place_forget()
         self.visible = False
-        
+        self.NotifyView = NotifyView(self)
         # Close button
         self.closeBtn = Button(
             self,
@@ -36,13 +36,14 @@ class FolderView(Frame):
         )
         self.submitBtn.place(relx=0.9, rely=0.9, anchor="se")
 
-    def renderItem(self, i, f,addLoad):
+    def renderItem(self, i, f,addLoad,addDelete):
         #accept function
         Label(self.table, text=str(i), bg="white", font=("Arial", 11)).grid(row=i, column=0, sticky="w", padx=10, pady=5)
         Label(self.table, text=f["FolderName"], bg="white", font=("Arial", 11)).grid(row=i, column=1, sticky="w", padx=10, pady=5)
         Button(self.table, text="Open", padx=10,
-               command=lambda: self.renderDetail(f,addLoad)).grid(row=i, column=2, sticky="w", padx=10, pady=5)
-        
+               command=lambda: self.renderDetail(f,addLoad,addDelete)).grid(row=i, column=2, sticky="w", padx=10, pady=5)
+      
+        #load btn
         load_btn = Button(
           self.table, 
           text="Load", 
@@ -52,6 +53,18 @@ class FolderView(Frame):
 
          # placing
         load_btn.grid(row=i, column=3, sticky="w", padx=5, pady=5)
+          
+        #delete btn
+        del_btn = Button(
+            self.table,
+            text = "Delete",
+            padx=10
+        )
+
+        del_btn.config(command=lambda Fid=f["Fid"]:addDelete(Fid))
+
+        #placing
+        del_btn.grid(row=i,column=4,sticky="w",padx=0,pady=5)
 
 
     def renderHeader(self):
@@ -60,7 +73,7 @@ class FolderView(Frame):
         Label(self.table, text="Action", font=("Arial", 12, "bold"), bg="white", padx=10).grid(row=0, column=2, sticky="w")
       
 
-    def renderDetail(self, folder,handler):
+    def renderDetail(self, folder,handler,handler2):
         # clear table first
         for widget in self.table.winfo_children():
             widget.destroy()
@@ -85,13 +98,13 @@ class FolderView(Frame):
 
         # Back button 
         Button(self.table, text="Back", padx=10,
-                command=lambda: self.renderList(self.lastFolders,handler)
+                command=lambda: self.renderList(self.lastFolders,handler,handler2)
         ).grid(row=i+1, column=0, columnspan=4, pady=15)
             
 
    
 
-    def renderList(self, folders,handler):
+    def renderList(self, folders,handler,handler2):
         #get load function from controller 
 
         self.lastFolders = folders  # store for back button
@@ -104,24 +117,39 @@ class FolderView(Frame):
 
         # Populate rows
         for i, f in enumerate(folders, start=1):
-            self.renderItem(f["Fid"], f,handler)
+            self.renderItem(i, f,handler,handler2)
+    
+    def clear_folder(self):
+     for widget in self.table.winfo_children():
+        widget.destroy()
 
-    def show(self, folders,handler):
+    def show(self, folders,handler,handler2):
         self.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.visible = True
-        self.renderList(folders,handler)
+        self.renderList(folders,handler,handler2)
 
     def hide(self):
         self.place_forget()
         self.visible = False
 
-    def toggleModal(self, folders,handler):
+    def toggleModal(self, folders,handler,handler2):
         if not self.visible:
-            self.show(folders,handler)
+            self.show(folders,handler,handler2)
         else:
             self.hide()
-             
-                
+
+    def popout(self,msg,bg = "green",fg = "white",config=False,
+            delay = 3000):
+        if config:
+            self.NotifyView.config(bg=bg)
+            self.NotifyView.msg.config(fg=fg,bg=bg)
+        if not config:
+            #set back to default 
+            self.NotifyView.config(bg=bg)
+            self.NotifyView.msg.config(fg=fg,bg=bg)
+        self.NotifyView.show(msg)
+        self.after(delay, self.NotifyView.hide)          
+                    
     def renderControl(self,handler):
         handler()
 

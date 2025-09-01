@@ -18,20 +18,14 @@
         "CurrentMode": "Pomodoro"
     },
     "Timer": {
-        "Min": 19,
-        "Sec": 34
+        "Min": 25,
+        "Sec": 0
     },
     "Task": [
         {
             "Tid": 1,
-            "Tcontent": "Sleep",
-            "Pomodoro": 1,
-            "Count": 0
-        },
-        {
-            "Tid": 2,
-            "Tcontent": "Wakeup",
-            "Pomodoro": 1,
+            "Tcontent": "Coding",
+            "Pomodoro": 2,
             "Count": 0
         }
     ],

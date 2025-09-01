@@ -165,6 +165,27 @@ class Model:
     @staticmethod
     def get_folder():
         return Model.Folder 
+    
+    def get_s_folder(Fid):
+        SelectedFolder = None
+        for Folder in Model.Folder:
+            if Folder["Fid"] == Fid:
+                SelectedFolder= Folder
+                print(SelectedFolder)
+                return SelectedFolder
+        return ""
+    
+    def remove_folder(Fid):
+        print("Delete data: ", Fid)
+        deleteItem  =  Model.get_s_folder(Fid)
+         
+        if deleteItem:
+            print("delete", deleteItem)
+            Model.Folder.remove(deleteItem)
+            Model.save_data()
+            return deleteItem
+        else:
+            print("Not found task")
 
     @staticmethod
     def get_state():

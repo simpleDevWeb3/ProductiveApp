@@ -28,6 +28,7 @@ class Pomodoro(Frame):
          
         self.openModal = False
         self.init()
+
 ################################### ##################
     #Notification helper
     def popout(self,msg,bg = "green",fg = "white",config=False,
@@ -56,6 +57,9 @@ class Pomodoro(Frame):
     ##############################
 
     def loadControl(self,id):
+     #Get Folder Name
+     FName = ""
+
      #data logic only
      #delete original task
      # make shallow copy of task so it wont effect real data
@@ -69,7 +73,7 @@ class Pomodoro(Frame):
         if(id == f["Fid"]):
             print(f"Folder {i}: {f['FolderName']}")
             folder = f 
-
+            FName = f["FolderName"]
             for j, t in enumerate(folder.get("Tasks", []), start=1): 
                 print(f"   Task {j}: {t['Tcontent']} | Time: {t.get('Time','')} | Pomodoro: {t.get('Pomodoro','')}")
                 Model.create_Task(j,t["Tcontent"],t["Pomodoro"])
@@ -80,22 +84,38 @@ class Pomodoro(Frame):
 
      # rerender view with new data
      self.TaskView.RenderTask(Model.Task,self.RemoveTask)
+     #close modal
+     self.folderControl()
+     #msg
+     self.popout(f"{FName} loaded succesfully")
     
     def folderControl(self):
       print("Setting")
       #render modal
       if not self.openModal:
         self.overlay.place(x=0, y=0, relwidth=1, relheight=1)
-        self.FolderView.toggleModal(Model.get_folder(),self.loadControl)
+        self.FolderView.toggleModal(Model.get_folder(),self.loadControl,self.delFolder)
         self.openModal = True
 
       #close modal
       elif self.openModal:
         self.overlay.place_forget()
-        self.FolderView.toggleModal(Model.get_folder(),self.loadControl)
+        self.FolderView.toggleModal(Model.get_folder(),self.loadControl,self.delFolder)
         self.openModal = False
 
+    def delFolder(self,Fid):
+       #delete data 
+       S_Folder = Model.remove_folder(Fid)
+       #clear view
+       self.FolderView.clear_folder()
 
+       #render back view
+       self.FolderView.renderList(Model.get_folder(),self.loadControl,self.delFolder)       
+
+       #Msg
+       self.FolderView.popout(f"Folder #[{S_Folder["FolderName"]}] deleted!")
+
+                
 
     
     def settingControl(self):
