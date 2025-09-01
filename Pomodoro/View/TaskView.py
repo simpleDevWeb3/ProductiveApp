@@ -39,6 +39,20 @@ class TaskView(Frame):
                              activeforeground="#FFFFFF") 
         self.AddBtn.pack(side=RIGHT)
 
+        #Add folder button (left)
+        self.OpenFolderBtn = Button(self.HeaderSection,
+                           text="Open Folder",
+                           font=("Arial", 12),
+                           bg="#BA4949",       # green-ish color (you can change it)
+                           fg="#FFFFFF",
+                           padx=10,
+                           pady=5,
+                           borderwidth=0,
+                           highlightthickness=0,
+                           activebackground="#BA4949",
+                           activeforeground="#FFFFFF")
+        self.OpenFolderBtn.pack(side=RIGHT)
+
         # Bottom border under HeaderSection
         self.borderLine = Frame(self.TaskSection, bg="white", height=2)
         self.borderLine.pack(fill='x', padx=20, pady=(0, 10))
@@ -144,9 +158,10 @@ class TaskView(Frame):
         save_btn.pack(side=RIGHT, padx=10)
         
     def disRunTask(self,data):
-        currentTask = data[0]["Tcontent"]
-        index = data[0]["Tid"]
-        self.currentTask.config(text=f"#{index} {currentTask}")
+        if data != []:
+            currentTask = data[0]["Tcontent"]
+            index = data[0]["Tid"]
+            self.currentTask.config(text=f"#{index} {currentTask}")
         
     def disSnozzing(self):
         self.currentTask.config(text="Snozzing Time!")
@@ -154,11 +169,11 @@ class TaskView(Frame):
         self.currentTask.config(text=msg)
 
     def RenderTask(self,data,addDelete):
-     
          for task in data:
             print(task)
             self.Render(task,addDelete)
             self.task_counter+=1
-
+    def setFolderHandler(self,handler):
+        self.OpenFolderBtn.config(command=handler)
  
                

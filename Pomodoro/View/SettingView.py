@@ -1,4 +1,5 @@
 from tkinter import *
+from .NotifyView import NotifyView
 
 class SettingView(Frame):
     def __init__(self,master):
@@ -6,7 +7,7 @@ class SettingView(Frame):
       self.place(relx=0.5, rely=0.5,anchor=CENTER)
       self.place_forget()
       self.visible = False
-
+      self.NotifyView = NotifyView(self)
       self.closeBtn = Button(
          self,
          text="X",
@@ -138,7 +139,19 @@ class SettingView(Frame):
          anchor="se"
       )
       
-    
+    #Notification helper
+    def popout(self,msg,bg = "green",fg = "white",config=False,
+               delay = 3000):
+        if config:
+            self.NotifyView.config(bg=bg)
+            self.NotifyView.msg.config(fg=fg,bg=bg)
+        if not config:
+            #set back to default 
+            self.NotifyView.config(bg=bg)
+            self.NotifyView.msg.config(fg=fg,bg=bg)
+        self.NotifyView.show(msg)
+        self.after(delay, self.NotifyView.hide) 
+
     def show(self,pomodoro,shortBreak,longBreak):
         # Show and center the frame
         self.place(relx=0.5, rely=0.5, anchor=CENTER)
@@ -176,8 +189,13 @@ class SettingView(Frame):
       pomodoro = self.inputPomodoro.get()
       shortbreak = self.inputShortBreak.get()
       longbreak = self.inputLongBreak.get()
+  
       handler(pomodoro, shortbreak, longbreak)
    
+    def set_timer(self,handler):
+       self.popout("Timer saved!")
+       self.get_timer(handler)
+
     def reset_timer(self,handler):
       self.inputPomodoro.delete(0, "end")   # clear any old text
       self.inputPomodoro.insert(0, "25")   # set new text
@@ -187,11 +205,11 @@ class SettingView(Frame):
 
       self.inputLongBreak.delete(0, "end")   # clear any old text
       self.inputLongBreak.insert(0, "10")   # set new text
-
+      self.popout("Timer reset!")
       self.get_timer(handler)
 
     def saveControl(self,handler):
-      self.submitBtn.config(command=lambda: self.get_timer(handler))
+      self.submitBtn.config(command=lambda: self.set_timer(handler))
 
    
     def resetControl(self,handler):

@@ -8,6 +8,7 @@ class Model:
     State = {}
     Timer = {}
     Task = []
+    Folder = []
     @staticmethod
     def load_data():
         if os.path.exists(DATA_FILE):
@@ -17,6 +18,7 @@ class Model:
                 Model.State = data.get("State", {})
                 Model.Timer = data.get("Timer", {})
                 Model.Task = data.get("Task",[])
+                Model.Folder = data.get("Folder",[])
         else:
             print(" File does not exist. Using defaults.")
             # Default values for first-time users
@@ -47,6 +49,39 @@ class Model:
                     "Count":0
                 }
             ]
+            Model.Folder = [
+                {   "Fid":1,
+                    "FolderName": "Morning Routine",
+                    "Tasks": [
+                        {
+                            "Tid": 1,
+                            "Tcontent": "Sleep",
+                            "Pomodoro": 1,
+                            "Sec_Left": 200,
+                            "Count": 0
+                        },
+                        {
+                            "Tid": 2,
+                            "Tcontent": "Wakeup",
+                            "Pomodoro": 1,
+                            "Sec_Left": 200,
+                            "Count": 0
+                        }
+                    ]
+                },
+                {   "Fid":2,
+                    "FolderName": "Work",
+                    "Tasks": [
+                        {
+                            "Tid": 3,
+                            "Tcontent": "Coding",
+                            "Pomodoro": 2,
+                            "Sec_Left": 300,
+                            "Count": 0
+                        }
+                    ]
+                }
+            ]
             Model.resetTimer()
             Model.save_data() 
 
@@ -59,7 +94,8 @@ class Model:
                 "Mode": Model.Mode,
                 "State": Model.State,
                 "Timer": Model.Timer,
-                "Task": Model.Task  
+                "Task": Model.Task,
+                "Folder":Model.Folder
             }, file, indent=4)
 
     @staticmethod
@@ -69,7 +105,7 @@ class Model:
                 "Tid": new_id,
                 "Tcontent": Task,     
                 "Pomodoro": pomodoro,
-                "Count":1,
+                "Count":0,
                 
             })
         Model.save_data()
@@ -127,11 +163,17 @@ class Model:
         Model.save_data()
 
     @staticmethod
+    def get_folder():
+        return Model.Folder 
+
+    @staticmethod
     def get_state():
         return Model.State
     @staticmethod
     def get_task():
+        print(Model.Task)
         return Model.Task
+
 
     @staticmethod
     def get_timerMode(mode):

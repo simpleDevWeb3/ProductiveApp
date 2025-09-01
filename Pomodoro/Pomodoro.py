@@ -3,6 +3,10 @@ from .Model import Model
 from .View.TimerView import TimerView
 from .View.SettingView import SettingView
 from .View.TaskView import TaskView
+from .View.NotifyView import NotifyView
+from .View.FolderView import FolderView
+import time
+import winsound
 
 # Pomodoro Initialize  
 class Pomodoro(Frame):
@@ -14,20 +18,85 @@ class Pomodoro(Frame):
     
         self.timerView = TimerView(self)
         self.TaskView = TaskView(self)
-
+        self.NotifyView = NotifyView(self)
+   
         self.timerId = None  
         self.overlay = Frame(self,bg="#555555")
         self.settingView =SettingView(self.overlay)
+        self.FolderView = FolderView(self.overlay)
         self.task_counter = 0
-       
+         
         self.openModal = False
         self.init()
 ################################### ##################
- 
+    #Notification helper
+    def popout(self,msg,bg = "green",fg = "white",config=False,
+               delay = 3000):
+        if config:
+            self.NotifyView.config(bg=bg)
+            self.NotifyView.msg.config(fg=fg,bg=bg)
+        if not config:
+            #set back to default 
+            self.NotifyView.config(bg=bg)
+            self.NotifyView.msg.config(fg=fg,bg=bg)
+        self.NotifyView.show(msg)
+        self.after(delay, self.NotifyView.hide) 
+
+    #ring bgm 
+    def ring(self,seconds,ring_file):
+       for remaining in range(seconds, 0, -1):
+        print(f"Time left: {remaining}", end="\r")
+        time.sleep(1)
+
+        # Play once at the end
+        winsound.PlaySound(ring_file, winsound.SND_FILENAME | winsound.SND_ASYNC)
+            
     ##############################
     #Navigation Bar
     ##############################
+
+    def loadControl(self,id):
+     #data logic only
+     #delete original task
+     # make shallow copy of task so it wont effect real data
+     for t in  Model.get_task().copy():
+        print("Wanted delete: ", t["Tid"])
+        Model.remove_Task(t["Tid"])
+
+
+     #replace the task
+     for i, f in enumerate(Model.get_folder(), start=1):
+        if(id == f["Fid"]):
+            print(f"Folder {i}: {f['FolderName']}")
+            folder = f 
+
+            for j, t in enumerate(folder.get("Tasks", []), start=1): 
+                print(f"   Task {j}: {t['Tcontent']} | Time: {t.get('Time','')} | Pomodoro: {t.get('Pomodoro','')}")
+                Model.create_Task(j,t["Tcontent"],t["Pomodoro"])
+
+     #view logic 
+     # delete previouse view
+     self.TaskView.clear_task()
+
+     # rerender view with new data
+     self.TaskView.RenderTask(Model.Task,self.RemoveTask)
     
+    def folderControl(self):
+      print("Setting")
+      #render modal
+      if not self.openModal:
+        self.overlay.place(x=0, y=0, relwidth=1, relheight=1)
+        self.FolderView.toggleModal(Model.get_folder(),self.loadControl)
+        self.openModal = True
+
+      #close modal
+      elif self.openModal:
+        self.overlay.place_forget()
+        self.FolderView.toggleModal(Model.get_folder(),self.loadControl)
+        self.openModal = False
+
+
+
     
     def settingControl(self):
       print("Setting")
@@ -67,8 +136,7 @@ class Pomodoro(Frame):
          #Model.State["isStart"] = True
          Model.set_Start(True)
          print(Model.get_Start(),"From start Timer")
-
-         
+        
          self.countdown()
          self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
          self.timerView.toggleStartButtonText(Model.get_Start())
@@ -88,7 +156,9 @@ class Pomodoro(Frame):
 
         
     def taskDone(self):
+        self.popout(f"Task #[{Model.getFirstTid()}] done!")
         Model.remove_Task(Model.getFirstTid())
+
         print("Before",Model.Task)
         Model.load_data()
         print("After",Model.Task)
@@ -103,8 +173,10 @@ class Pomodoro(Frame):
 
         if min_left == 0 and sec_left == 0:
             self.stopTimer()
+         
             Model.resetTimer()
             self.timerView.renderTimer(Model.get_timer('Min'), Model.get_timer('Sec'))
+          
 
             if Model.get_Mode() == "Pomodoro":
                 #self.taskDone()
@@ -216,16 +288,17 @@ class Pomodoro(Frame):
            
             self.TaskView.Render(Model.Task[-1],self.RemoveTask)
             self.TaskView.AddBtn.config(state="normal")    
-          
-           
+            self.popout(f"[Task #{tid} Added!")
+        elif task_text == "":
+            self.popout(f"[Task #{tid}] Empty! Please type something ","red","white",True)
         else:
-            print(f"[Task #{tid}] Empty! Please type something or Pomodor must > 0.")
+            self.popout(f"[Task #{tid}] Session must atleast 1 ","red","white",True)
 
     def RemoveTask(self, tid, button, entry):
         task_frame = button.master
         task_frame.destroy()
         Model.remove_Task(tid)
-        print(f"[Task #{tid}] Removed.")
+        self.popout(f"[Task #{tid}] Removed.")
             
     def createTask(self):
         #render task
@@ -233,9 +306,14 @@ class Pomodoro(Frame):
         
  
             
-        #save data
+    #save data
     def TaskController(self):
         self.createTask()
+
+    ###########################################################
+    #Folder function
+    ###########################################################
+
      
     def init(self):
          #LOAD CLIENT DATA
@@ -258,16 +336,23 @@ class Pomodoro(Frame):
          #self.modeControl(Model.get_Mode())
          #render task
          self.TaskView.RenderTask(Model.Task,self.RemoveTask)
-        
+         self.TaskView.setFolderHandler(self.folderControl)
+
+
         # attached handler for button
          self.timerView.setSettingHandler(self.settingControl)
-       
-          
+         
+    
          self.timerView.setStartHandler(self.timerControl)
          self.timerView.setModeHandler(self.modeControl)
+         
+
+         
          self.settingView.closeControl(self.settingControl)
          self.settingView.saveControl(self.setTimer)
          self.settingView.resetControl(self.setTimer)
+
+         self.FolderView.closeControl(self.folderControl)
 
          self.TaskView.AddTaskHandler(self.TaskController)
        
