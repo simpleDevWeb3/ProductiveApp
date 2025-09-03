@@ -1,0 +1,62 @@
+[
+    {
+        "id": "CC0001",
+        "name": "Discussion Room(CC) 1",
+        "location": "Cyber Center",
+        "equipment": "PC, Projector, Printer"
+    },
+    {
+        "id": "CC0002",
+        "name": "Discussion Room(CC) 2",
+        "location": "Cyber Center",
+        "equipment": "PC, Projector"
+    },
+    {
+        "id": "CC0003",
+        "name": "Discussion Room(CC) 3",
+        "location": "Cyber Center",
+        "equipment": "PC, Projector"
+    },
+    {
+        "id": "CC0004",
+        "name": "Discussion Room(CC) 4",
+        "location": "Cyber Center",
+        "equipment": "PC"
+    },
+    {
+        "id": "CC0005",
+        "name": "Discussion Room(CC) 5",
+        "location": "Cyber Center",
+        "equipment": "PC"
+    },
+    {
+        "id": "LB0001",
+        "name": "Discussion Room(LB) 1",
+        "location": "Library",
+        "capacity": "8 Students"
+    },
+    {
+        "id": "LB0002",
+        "name": "Discussion Room(LB) 2",
+        "location": "Library",
+        "capacity": "6 Students"
+    },
+    {
+        "id": "LB0003",
+        "name": "Discussion Room(LB) 3",
+        "location": "Library",
+        "capacity": "6 Students"
+    },
+    {
+        "id": "LB0004",
+        "name": "Discussion Room(LB) 4",
+        "location": "Library",
+        "capacity": "6 Students"
+    },
+    {
+        "id": "LB0005",
+        "name": "Discussion Room(LB) 5",
+        "location": "Library",
+        "capacity": "4 Students"
+    }
+]

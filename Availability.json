@@ -1,0 +1,232 @@
+[
+    {
+        "id": "CC0001",
+        "slots": {
+            "04-09-2025": [
+                false,
+                false,
+                false,
+                false
+            ],
+            "05-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "06-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ]
+        }
+    },
+    {
+        "id": "CC0002",
+        "slots": {
+            "04-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "05-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "06-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ]
+        }
+    },
+    {
+        "id": "CC0003",
+        "slots": {
+            "04-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "05-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "06-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ]
+        }
+    },
+    {
+        "id": "CC0004",
+        "slots": {
+            "04-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "05-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "06-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ]
+        }
+    },
+    {
+        "id": "CC0005",
+        "slots": {
+            "04-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "05-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "06-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ]
+        }
+    },
+    {
+        "id": "LB0001",
+        "slots": {
+            "04-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "05-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "06-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ]
+        }
+    },
+    {
+        "id": "LB0002",
+        "slots": {
+            "04-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "05-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "06-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ]
+        }
+    },
+    {
+        "id": "LB0003",
+        "slots": {
+            "04-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "05-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "06-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ]
+        }
+    },
+    {
+        "id": "LB0004",
+        "slots": {
+            "04-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "05-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "06-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ]
+        }
+    },
+    {
+        "id": "LB0005",
+        "slots": {
+            "04-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "05-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "06-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ]
+        }
+    }
+]
