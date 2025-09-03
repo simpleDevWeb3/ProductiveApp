@@ -69,7 +69,9 @@ class HomePage:
 
     def exit(self):
         if tkinter.messagebox.askyesno("Exit", "Are you sure you want to exit?"):
-            window.destroy()
+            self.frame.destroy()
+            window.withdraw()
+
      
 class RoomList:
     _previousPage = None
@@ -460,7 +462,7 @@ def bookingHistory():
         print("Stud ID.\tRoom ID.\tRoom Name\tLocation\tDate\tTime")
         print(h)
 
-def main():
+def main_cli():
 
     while True:
         menuMsg("Home Pge", "1. Room List", "2. Return Room's Key", "3. Booking History", "0. Exit")
