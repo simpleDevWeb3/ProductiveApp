@@ -5,40 +5,22 @@
             "Seconds": 0
         },
         "ShortBreak": {
-            "Minute": 10,
+            "Minute": 5,
             "Seconds": 0
         },
         "LongBreak": {
-            "Minute": 15,
+            "Minute": 10,
             "Seconds": 0
         }
     },
     "State": {
         "isStart": false,
-        "CurrentMode": "ShortBreak"
+        "CurrentMode": "Pomodoro"
     },
     "Timer": {
-        "Min": 10,
+        "Min": 25,
         "Sec": 0
     },
     "Task": [],
-    "Folder": [
-        {
-            "Fid": 1,
-            "FolderName": "Morning",
-            "Tasks": [
-                {
-                    "Tid": 1,
-                    "Tcontent": "breakfast",
-                    "Pomodoro": 2,
-                    "Count": 0
-                }
-            ]
-        },
-        {
-            "Fid": 2,
-            "FolderName": "Night",
-            "Tasks": []
-        }
-    ]
+    "Folder": []
 }

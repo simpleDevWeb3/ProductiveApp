@@ -1,6 +1,6 @@
 from tkinter import Tk, Frame, Button, Label
 from Pomodoro.program import PomodoroApp
-
+from Expense.expenses_tracker import Expense
 
 class Main(Tk):
     def __init__(self):
@@ -22,10 +22,14 @@ class Main(Tk):
         Button(frame, text="Exit", width=20, command=self.quit).pack(pady=10)
 
         self.mainloop()
-
+   
     def open_pomodoro(self):
         # Open PomodoroApp in a new window
         PomodoroApp()
+      
+    def open_expense(self):
+        # Open PomodoroApp in a new window
+        Expense()  
 
 
 # Start Application
