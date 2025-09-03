@@ -354,24 +354,25 @@ def gui_analysis():
         tk.Label(analysis_window, text="No expenses to analyze.", font=font_big).pack(pady=20)
 
 # ------------------- MAIN -------------------
-root = tk.Tk()
-root.configure(bg="lightgrey")
-root.title("💰Expense Tracker")
-root.geometry("1200x800")
+class ExpenseApp(tk):
+    root = tk.Tk()
+    root.configure(bg="lightgrey")
+    root.title("💰Expense Tracker")
+    root.geometry("1200x800")
 
-load_expenses()
-# Call load_budget() at startup (add this after load_expenses())
-load_budget()
+    load_expenses()
+    # Call load_budget() at startup (add this after load_expenses())
+    load_budget()
 
-font_big = ("Arial", 14)
-tk.Label(root, text="💰" "Expense Tracker",bg="lightgrey",fg="orange", font=("Arial", 26, "bold")).pack(pady=30)
+    font_big = ("Arial", 14)
+    tk.Label(root, text="💰" "Expense Tracker",bg="lightgrey",fg="orange", font=("Arial", 26, "bold")).pack(pady=30)
 
-tk.Button(root, text="➕Add Expense", command=gui_add_expense, width=30, height=2,bg="lightblue", font=font_big).pack(pady=10)
-tk.Button(root, text="📋Show Expenses", command=gui_show_expenses, width=30, height=2, bg="lightblue", font=font_big).pack(pady=10)
-tk.Button(root, text="🎯Set Budget", command=gui_set_budget, width=30, height=2, bg="lightblue", font=font_big).pack(pady=10)
-tk.Button(root, text="🔍Check Budget", command=gui_check_budget, width=30, height=2, bg="lightblue", font=font_big).pack(pady=10)
-tk.Button(root, text="📊Analysis", command=gui_analysis, width=30, height=2, bg="lightblue", font=font_big).pack(pady=10)
+    tk.Button(root, text="➕Add Expense", command=gui_add_expense, width=30, height=2,bg="lightblue", font=font_big).pack(pady=10)
+    tk.Button(root, text="📋Show Expenses", command=gui_show_expenses, width=30, height=2, bg="lightblue", font=font_big).pack(pady=10)
+    tk.Button(root, text="🎯Set Budget", command=gui_set_budget, width=30, height=2, bg="lightblue", font=font_big).pack(pady=10)
+    tk.Button(root, text="🔍Check Budget", command=gui_check_budget, width=30, height=2, bg="lightblue", font=font_big).pack(pady=10)
+    tk.Button(root, text="📊Analysis", command=gui_analysis, width=30, height=2, bg="lightblue", font=font_big).pack(pady=10)
 
-root.mainloop()
+    root.mainloop()
 
-#create function to run program  
+    #create function to run program  
