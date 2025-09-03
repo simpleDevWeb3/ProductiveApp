@@ -5,52 +5,116 @@
             "Seconds": 0
         },
         "ShortBreak": {
-            "Minute": 5,
+            "Minute": 10,
             "Seconds": 0
         },
         "LongBreak": {
-            "Minute": 10,
+            "Minute": 15,
             "Seconds": 0
         }
     },
     "State": {
-        "isStart": false,
+        "isStart": true,
         "CurrentMode": "Pomodoro"
     },
     "Timer": {
-        "Min": 25,
-        "Sec": 0
+        "Min": 24,
+        "Sec": 51
     },
     "Task": [],
     "Folder": [
         {
             "Fid": 1,
-            "FolderName": "exercise",
+            "FolderName": "Morning Routine",
             "Tasks": [
                 {
+                    "Tid": 1,
+                    "Tcontent": "Sleep",
+                    "Pomodoro": 1,
+                    "Sec_Left": 200,
+                    "Count": 0
+                },
+                {
                     "Tid": 2,
-                    "Tcontent": "22",
-                    "Pomodoro": 3,
+                    "Tcontent": "Wakeup",
+                    "Pomodoro": 1,
+                    "Sec_Left": 200,
+                    "Count": 0
+                },
+                {
+                    "Tid": 3,
+                    "Tcontent": "scheduling",
+                    "Pomodoro": 2,
                     "Count": 0
                 },
                 {
                     "Tid": 4,
-                    "Tcontent": "333",
-                    "Pomodoro": 5,
-                    "Count": 0
-                },
-                {
-                    "Tid": 5,
-                    "Tcontent": "44444",
-                    "Pomodoro": 3,
+                    "Tcontent": "coffe time",
+                    "Pomodoro": 2,
                     "Count": 0
                 }
             ]
         },
         {
             "Fid": 2,
-            "FolderName": "wwww",
-            "Tasks": []
+            "FolderName": "Work",
+            "Tasks": [
+                {
+                    "Tid": 3,
+                    "Tcontent": "Coding",
+                    "Pomodoro": 2,
+                    "Sec_Left": 300,
+                    "Count": 0
+                }
+            ]
+        },
+        {
+            "Fid": 3,
+            "FolderName": "Study OS",
+            "Tasks": [
+                {
+                    "Tid": 1,
+                    "Tcontent": "Module3",
+                    "Pomodoro": 5,
+                    "Count": 0
+                },
+                {
+                    "Tid": 2,
+                    "Tcontent": "Module4",
+                    "Pomodoro": 5,
+                    "Count": 0
+                }
+            ]
+        },
+        {
+            "Fid": 4,
+            "FolderName": "Afternoon routine",
+            "Tasks": [
+                {
+                    "Tid": 1,
+                    "Tcontent": "222",
+                    "Pomodoro": 3,
+                    "Count": 0
+                },
+                {
+                    "Tid": 2,
+                    "Tcontent": "22ddd",
+                    "Pomodoro": 5,
+                    "Count": 0
+                }
+            ]
+        },
+        {
+            "Fid": 5,
+            "FolderName": "3333",
+            "Tasks": [
+                {
+                    "Tid": 1,
+                    "Tcontent": "22",
+                    "Pomodoro": 3,
+                    "Count": 0
+                }
+            ]
         }
     ]
 }

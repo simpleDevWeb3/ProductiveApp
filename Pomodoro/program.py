@@ -1,8 +1,8 @@
 from tkinter import *
-from Pomodoro.Pomodoro import Pomodoro
+from .Pomodoro import Pomodoro
  
 # Application 
-class App(Tk):
+class PomodoroApp(Tk):
     def __init__(self):
         super().__init__() 
         self.geometry("500x350")
@@ -13,6 +13,15 @@ class App(Tk):
 
         self.mainloop()
 
-#Start Application
-App()
+
+
+
+
+
+
+
+
+
+
+
 

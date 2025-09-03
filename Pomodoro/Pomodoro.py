@@ -274,7 +274,7 @@ class Pomodoro(Frame):
 
         # Update timer view
         self.timerView.renderTimer(Model.get_timer('Min'), Model.get_timer('Sec'))
-        self.timerId = self.after(1, self.countdown)
+        self.timerId = self.after(1000, self.countdown)
 
     def timerControl(self):
         #Timer Mode
