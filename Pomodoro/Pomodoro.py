@@ -5,8 +5,7 @@ from .View.SettingView import SettingView
 from .View.TaskView import TaskView
 from .View.NotifyView import NotifyView
 from .View.FolderView import FolderView
-import time
-import winsound
+
 
 # Pomodoro Initialize  
 class Pomodoro(Frame):
@@ -47,14 +46,7 @@ class Pomodoro(Frame):
         self.NotifyView.show(msg)
         self.after(delay, self.NotifyView.hide) 
 
-    #ring bgm 
-    def ring(self,seconds,ring_file):
-       for remaining in range(seconds, 0, -1):
-        print(f"Time left: {remaining}", end="\r")
-        time.sleep(1)
-
-        # Play once at the end
-        winsound.PlaySound(ring_file, winsound.SND_FILENAME | winsound.SND_ASYNC)
+ 
             
     ##############################
     #Navigation Bar
@@ -117,7 +109,7 @@ class Pomodoro(Frame):
        self.FolderView.renderList(Model.get_folder(),self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl,self.F_delTaskControl)       
 
        #Msg
-       self.FolderView.popout(f"Folder #[{S_Folder["FolderName"]}] deleted!")
+       self.FolderView.popout(f"Folder #[{S_Folder["FolderName"]}] deleted!","red")
 
                 
    
@@ -133,6 +125,9 @@ class Pomodoro(Frame):
 
         #rerender view
         self.FolderView.renderList(Model.get_folder(),self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl,self.F_delTaskControl)
+
+        #Msg
+        self.FolderView.popout(f"Folder #[{Fname}] created!")
 
 
 
@@ -163,6 +158,9 @@ class Pomodoro(Frame):
         #rerender view
         self.FolderView.renderDetail(Folder,self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl,self.F_delTaskControl)
 
+        #msg
+        self.FolderView.popout(f"Task #[{task_name}] created!")
+
     def F_saveTaskControl(self,folder,Fid,row):
         
         self.FolderView.task_input(folder,Fid,row,self.F_createTask)
@@ -175,6 +173,9 @@ class Pomodoro(Frame):
         self.FolderView.clear_folder()
         #rerender view
         self.FolderView.renderDetail(Folder,self.loadControl,self.delFolder,self.F_createControl,self.F_saveTaskControl,self.F_delTaskControl)
+        
+        #msg
+        self.FolderView.popout(f"Task #[{Task["Tcontent"]}] deleted!","red")
 
     def setTimer (self,pomodoro,shortBreak,longBreak):
         Model.set_TimerMode("Pomodoro",pomodoro)
