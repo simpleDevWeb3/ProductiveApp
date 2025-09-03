@@ -14,7 +14,7 @@ class Library(DiscussionRoom):
         self._capacity = capacity
     
     def __str__ (self):
-        return super().__str__() + f"Capacity : {self._capacity}"
+        return super().__str__() + f"Capacity\t\t: {self._capacity}"
     
     def json(self):
         json = super().json()

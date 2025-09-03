@@ -96,12 +96,14 @@ class HomePage:
                            text="Booking History",
                             font=("Calibri", 20, "bold"),
                             width=22, height=3, 
+                            bg="deep sky blue",
                             command=self.displayHistory)
         
         btExit = Button(self.frame, 
                         text="Exit",                             
                         font=("Calibri", 20, "bold"),
                         width=22, height=3, 
+                        bg="red",
                         command=self.exit)
 
         btRoomList.grid(row=1, column=1, pady=5, padx=15)
@@ -143,8 +145,9 @@ class RoomList:
 
         """***************************************************************TABLE"""
         style = ttk.Style()
-        style.configure("Treeview", font=("Calibri", 12), rowheight=30)          # table content
-        style.configure("Treeview.Heading", font=("Calibri", 14, "bold"))  # header
+        style.configure("Treeview", font=("Calibri", 12), rowheight=30)         # table content
+        style.configure("Treeview.Heading", font=("Calibri", 14, "bold"))       # header
+        style.map("Treeview", background=[("selected", "#2EA6DE")])
 
         HEARDER = ("No.", "ID", "Name", "Location", "Available (Slots)")
         self.table = ttk.Treeview(self.frame, columns=HEARDER, show="headings")
@@ -225,9 +228,19 @@ class RoomDetail:
         self.frame1 = Frame(frame)
         self.frame1.pack(pady=10)
 
-        Label(self.frame1, text=room, font=("Calibri", 12), justify=LEFT).pack(padx=10, pady=10)
-        btn = Button(self.frame1, bg="grey", text="Close", font=("Calibri", 12), justify=RIGHT, command=self.destroy)
-        btn.pack(ipadx=20, pady=10)
+        Label(self.frame1, 
+              text=room, 
+              font=("Calibri", 16), 
+              justify=LEFT
+              ).pack(padx=40, pady=20)
+        
+        Button(self.frame1, 
+               bg="grey", 
+               text="Close", 
+               font=("Calibri", 12), 
+               justify=RIGHT, 
+               command=self.destroy
+               ).pack(ipadx=20, pady=10)
 
     def destroy(self):
         self.frame1.destroy()
@@ -337,7 +350,7 @@ class Booking_Time:
         
 class History:
     def __init__(self):
-        self.frame = Frame(window, bg="white")
+        self.frame = Frame(window, bg="lightblue")
         self.frame.pack()
 
         """***************************************************************TABLE"""

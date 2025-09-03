@@ -14,7 +14,7 @@ class CyberCenter(DiscussionRoom):
         self._equipment = equipment
     
     def __str__ (self):
-        return super().__str__() + f"Equipment : {self._equipment}"
+        return super().__str__() + f"Equipment\t: {self._equipment}"
     
     def json(self):
         json = super().json()
