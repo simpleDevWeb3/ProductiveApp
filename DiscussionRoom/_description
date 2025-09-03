@@ -1,0 +1,55 @@
+"""
+F. Discussion Room Booking
+A Discussion Room Booking allows users to
+1. book a discussion for specific times.
+
+It typically includes features like 
+2. selecting a venue (Eg: Library or Cyber Centre), 
+3. checking venue availability, 
+4. entering booking details. 
+
+After booking, the user shall be able to 
+5. view the booking they have made.
+
+
+string processing
+file processing
+"""
+
+"""
+def insertBook():
+    id = idInputValidation("Book ID: ")
+    name = input("Name  : ") 
+    print("Publish date")
+    date = dateInputValidation()
+    publisher = input("Publisher: ")
+    category = strInputValidation("Category: ")
+
+    b = StoryBook(id, name, date, publisher, category)
+    books.append(b)
+"""
+
+"""
+def modifyBook(book):
+    while True:
+        menuMsg("Modify", "1. Name", "2. Publish Date", "3. Publisher", "4. Category", "0. Back")
+        choice = intInputValidation(0, 4, "Enter no. :")
+
+        match choice:
+            case 1:
+                book.name = input("Name  : ") 
+            case 2:
+                book.date = dateInputValidation()
+            case 3:
+                book.publisher = input("Publisher: ")
+            case 4:
+                book.category = strInputValidation("Category: ")
+            case 0:
+                break
+"""
+
+"""
+match
+string
+comment
+"""
