@@ -5,12 +5,16 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-FILENAME = "expenses.txt"
-BUDGET_FILE = "budget.txt"
+#--------- File Handling ---------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FILENAME = os.path.join(BASE_DIR, "expenses.txt")
+BUDGET_FILE = os.path.join(BASE_DIR, "budget.txt")
+
 
 def format_amount(amount):
     return f"{float(amount):.2f}"
 
+#--------- Expense Class and Validation ---------
 class Expense:
     def __init__(self, date, category, amount, description):
         self.date = date
@@ -53,6 +57,7 @@ def validate_description(desc_str):
         return False, "Description cannot be empty"
     return True, desc_str
 
+#--------- Data Handling ---------
 expenses = []
 budget = 0
 
@@ -211,7 +216,7 @@ class ShowExpensesPage(tk.Frame):
         tk.Button(self, text="Delete Selected", command=self.delete_selected, bg="red", fg="white", font=font_big, width=20).pack(pady=10)
         tk.Button(self, text="Delete All", command=self.delete_all, bg="red", fg="white", font=font_big, width=20).pack(pady=10)
 
-        # Back button fixed at bottom
+       
         back_frame = tk.Frame(self, bg="lightgrey")
         back_frame.pack(side="bottom", fill="x", pady=10)
         tk.Button(back_frame, text="Back", command=lambda: controller.show_frame(MainMenu), font=font_big).pack()
@@ -375,6 +380,7 @@ class AnalysisPage(tk.Frame):
             self.canvas.draw()
             self.canvas.get_tk_widget().pack(pady=20)
 
+#--------- Main Application ---------
 class ExpenseApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -400,7 +406,8 @@ class ExpenseApp(tk.Tk):
         elif isinstance(frame, AnalysisPage):
             frame.update_analysis()
         frame.tkraise()
-
+        
+#--------- Run Application ---------
 if __name__ == "__main__":
     load_expenses()
     load_budget()
