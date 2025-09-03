@@ -1,7 +1,7 @@
 from tkinter import Tk, Frame, Button, Label
 from Pomodoro.program import PomodoroApp
 from DiscussionRoom import testProgram
-from Expense.expenses_tracker  import ExpenseApp
+from Expense.expenses_tracker import ExpenseApp, load_expenses, load_budget
 class Main(Tk):
     def __init__(self):
         super().__init__()
@@ -22,7 +22,7 @@ class Main(Tk):
         Button(frame, text="Discussion Room", width=20, command=self.open_discussionRoom).pack(pady=10)
 
         # Expense button
-        Button(frame, text="Expense", width=20, command=self.open_expense).pack(pady=10)
+        Button(frame, text="Expense Tracker", width=20, command=self.open_expense).pack(pady=10)
 
         # (Future) You can add more options here
         Button(frame, text="Exit", width=20, command=self.quit).pack(pady=10)
@@ -34,8 +34,13 @@ class Main(Tk):
         PomodoroApp()
       
     def open_expense(self):
-        # Open PomodoroApp in a new window
-        ExpenseApp()
+        # Make sure data is loaded first
+        load_expenses()
+        load_budget()
+
+        # Open ExpenseApp in its own new window
+        expense_window = ExpenseApp()
+        expense_window.mainloop()
 
     def open_discussionRoom(self):
         # Open PomodoroApp in a new window
@@ -43,4 +48,5 @@ class Main(Tk):
 
 
 # Start Application
-Main()
+if __name__ == "__main__":
+    Main()
