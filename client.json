@@ -1,7 +1,7 @@
 {
     "Mode": {
         "Pomodoro": {
-            "Minute": 25,
+            "Minute": 1,
             "Seconds": 0
         },
         "ShortBreak": {
@@ -14,13 +14,45 @@
         }
     },
     "State": {
-        "isStart": false,
+        "isStart": true,
         "CurrentMode": "Pomodoro"
     },
     "Timer": {
-        "Min": 25,
-        "Sec": 0
+        "Min": 0,
+        "Sec": 24
     },
-    "Task": [],
-    "Folder": []
+    "Task": [
+        {
+            "Tid": 1,
+            "Tcontent": "1",
+            "Pomodoro": 2,
+            "Count": 0
+        },
+        {
+            "Tid": 2,
+            "Tcontent": "2",
+            "Pomodoro": 2,
+            "Count": 0
+        }
+    ],
+    "Folder": [
+        {
+            "Fid": 1,
+            "FolderName": "Morning",
+            "Tasks": [
+                {
+                    "Tid": 1,
+                    "Tcontent": "1",
+                    "Pomodoro": 2,
+                    "Count": 0
+                },
+                {
+                    "Tid": 2,
+                    "Tcontent": "2",
+                    "Pomodoro": 2,
+                    "Count": 0
+                }
+            ]
+        }
+    ]
 }

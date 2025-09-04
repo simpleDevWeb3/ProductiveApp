@@ -64,6 +64,7 @@ def load_expenses():
                 parts = line.strip().split(",")
                 if len(parts) == 4:
                     expenses.append(Expense(parts[0], parts[1], float(parts[2]), parts[3]))
+    
 
 def save_expenses():
     with open(FILENAME, "w", encoding="utf-8") as file:
