@@ -351,7 +351,7 @@ class SetBudgetPage(tk.Frame):
         tk.Label(self, text="🎯Set Budget", fg="dark orange", bg="lightgrey", font=("Arial", 22, "bold", "underline")).pack(pady=20)
         frame = tk.Frame(self, bg="lightgrey")
         frame.place(relx=0.5, rely=0.5, anchor="center")
-        tk.Label(frame, text="Enter monthly budget: RM", font=font_big, bg="lightgrey").pack(pady=10)
+        tk.Label(frame, text="Enter budget: RM", font=font_big, bg="lightgrey").pack(pady=10)
         preset_amounts = ["100", "200", "500", "1000", "2000"]
         self.budget_entry = ttk.Combobox(frame, values=preset_amounts, font=font_big, width=23)
         self.budget_entry.pack(pady=10)
@@ -490,3 +490,4 @@ if __name__ == "__main__":
     load_budget()
     app = ExpenseApp()
     app.mainloop()
+
