@@ -38,7 +38,7 @@ class DiscussionRoom:
         return self._ID == value
 
     def __str__ (self):
-        return f"ID : {self._ID}\nName : {self._name}\nRoom location : {self._location}\n"
+        return f"ID\t\t: {self._ID}\nName\t\t: {self._name}\nRoom location\t: {self._location}\n"
 
     def updateSlotStatus(self, date, time):
         self._slots.toggle_availability(date, time)

@@ -1,18 +1,18 @@
 from DiscussionRoom.CyberCenter import CyberCenter
 from DiscussionRoom.Library import Library
 from DiscussionRoom.Availability import Availability
-#from Student import Student
 from DiscussionRoom.BookingHistory import BookingHistory
 import datetime
 from tkinter import *
 from tkinter import ttk
-import tkinter.simpledialog
 import tkinter.messagebox
 import json
 
 YEAR = datetime.date.today().year
 rooms = []
 history = []
+GUI_window = False #use to prevent multiple window being created -> window
+app = True  #use to prevent duplicated GUI being created -> frame
 
 window = Tk()
 window.configure(bg="lightblue")
@@ -22,11 +22,64 @@ window.withdraw()
 
 class discussionRoomGUI:
     def __init__(self):
-        HomePage()        
+        #read file
+        #"""
+        try:
+            with open("Availability.json", "r") as file:
+                dataFromFile = json.load(file)
+            
+            for data in dataFromFile:
+                Availability(data.get("id"), data.get("slots"))
+        except Exception as e:
+            print("Availability-", e)
+            
+        try:
+            with open("DiscussionRoom.json", "r") as file:
+                dataFromFile = json.load(file)
+
+            for data in dataFromFile:
+                if data.get("location") == "Cyber Center":
+                    rooms.append(CyberCenter(data.get("id"), data.get("name"), data.get("location"), data.get("equipment")))
+                elif data.get("location") == "Library":
+                    rooms.append(Library(data.get("id"), data.get("name"), data.get("location"), data.get("capacity")))
+        except Exception as e:
+            print("DiscussionRoom-", e)
+            
+        try:
+            with open("BookingHistory.json", "r") as file:
+                dataFromFile = json.load(file)
+            
+            for data in dataFromFile:
+                room = linear_search(data.get("room"), rooms)
+                if not room == -1:
+                    history.append(BookingHistory(room, data.get("date"), data.get("time"), data.get("bookingDate")))
+        except Exception as e:
+            print("BookingHistory-", e)
+        #"""
+
+        HomePage()   
         window.mainloop()
+
+        #write file
+        #"""
+        list = []
+        with open("BookingHistory.json", "w") as file:
+            for h in history:
+                list.append(h.json())
+            json.dump(list, file, indent=4)
+
+        list = []
+        with open("Availability.json", "w") as file:
+            for obj in Availability.availability():
+                list.append(obj.json())
+            json.dump(list, file, indent=4)
+        rooms.clear()
+        history.clear()
+        #"""
 
 class HomePage:
     def __init__(self):
+
         window.title("Discussion Room Booking")
 
         self.frame = Frame(window, bg="lightblue")
@@ -43,12 +96,14 @@ class HomePage:
                            text="Booking History",
                             font=("Calibri", 20, "bold"),
                             width=22, height=3, 
+                            bg="deep sky blue",
                             command=self.displayHistory)
         
         btExit = Button(self.frame, 
                         text="Exit",                             
                         font=("Calibri", 20, "bold"),
                         width=22, height=3, 
+                        bg="red",
                         command=self.exit)
 
         btRoomList.grid(row=1, column=1, pady=5, padx=15)
@@ -69,9 +124,11 @@ class HomePage:
 
     def exit(self):
         if tkinter.messagebox.askyesno("Exit", "Are you sure you want to exit?"):
-            self.frame.destroy()
+            #self.frame.destroy()
             window.withdraw()
-
+            global app, GUI_window
+            GUI_window = False
+            app = False
      
 class RoomList:
     _previousPage = None
@@ -88,8 +145,9 @@ class RoomList:
 
         """***************************************************************TABLE"""
         style = ttk.Style()
-        style.configure("Treeview", font=("Calibri", 12), rowheight=30)          # table content
-        style.configure("Treeview.Heading", font=("Calibri", 14, "bold"))  # header
+        style.configure("Treeview", font=("Calibri", 12), rowheight=30)         # table content
+        style.configure("Treeview.Heading", font=("Calibri", 14, "bold"))       # header
+        style.map("Treeview", background=[("selected", "#2EA6DE")])
 
         HEARDER = ("No.", "ID", "Name", "Location", "Available (Slots)")
         self.table = ttk.Treeview(self.frame, columns=HEARDER, show="headings")
@@ -170,9 +228,19 @@ class RoomDetail:
         self.frame1 = Frame(frame)
         self.frame1.pack(pady=10)
 
-        Label(self.frame1, text=room, font=("Calibri", 12), justify=LEFT).pack(padx=10, pady=10)
-        btn = Button(self.frame1, bg="grey", text="Close", font=("Calibri", 12), justify=RIGHT, command=self.destroy)
-        btn.pack(ipadx=20, pady=10)
+        Label(self.frame1, 
+              text=room, 
+              font=("Calibri", 16), 
+              justify=LEFT
+              ).pack(padx=40, pady=20)
+        
+        Button(self.frame1, 
+               bg="grey", 
+               text="Close", 
+               font=("Calibri", 12), 
+               justify=RIGHT, 
+               command=self.destroy
+               ).pack(ipadx=20, pady=10)
 
     def destroy(self):
         self.frame1.destroy()
@@ -282,7 +350,7 @@ class Booking_Time:
         
 class History:
     def __init__(self):
-        self.frame = Frame(window, bg="white")
+        self.frame = Frame(window, bg="lightblue")
         self.frame.pack()
 
         """***************************************************************TABLE"""
@@ -326,214 +394,22 @@ def linear_search(target, list):
             return value
     return -1
 
-def d(x = "--------"):
-    print(f"------------------{x}-------------------")
-
-def menuMsg(*args):
-    d(f"{args[0]}")
-
-    for x in range(1, len(args)):
-        print(f"{args[x]}")
-
-def strInputValidation(msg):
-    while True:
-        value = input(msg)
-
-        if value.isalpha():
-            return value
-        else:
-            print("Only alphbetic characters is allowed")
-
-def intInputValidation(min, max, msg):
-    while True:
-        try:
-            value = int(input(msg))
-            if min <= int(value) <= max:
-                return int(value)
-            elif int(value) > max or int(value) < min:
-                print(f"Please enter number between {min} and {max}")
-
-        except ValueError:
-            print("Please enter number.")
-
-def idInputValidation(msg):
-    value = input(msg)
-
-    while True:
-        if value[:3].isalpha() and value[3:].isdigit() and len(value) == 7:
-            return value
-        elif len(value) != 7:
-            print("The maximum length of id is 7 characters.")
-        else:
-            print("Please follow the ID format, XXX1234.")
-
-        value = input(msg)
-
-def dateInputValidation():
-    while True:
-        try:
-            m = intInputValidation(1, 12, "Month: ")
-            d = intInputValidation(1, 31, "Day: ")
-            date = datetime.date(YEAR, m, d)
-            return date.strftime("%d-%m-%Y")
-        except ValueError:
-            print(f"{d}-{m}-{YEAR} is not a valid date.")
-
-def timeInputValidation():
-    h = intInputValidation(8, 17, "Hour: ")
-    m = intInputValidation(0, 59, "Minustes: ")
-    return datetime.time(h, m)
-
-def viewDetails(room):
-    while True:
-        d("Room Details")
-        print(room)
-
-        menuMsg("",  "1 Book", "0 Back")
-        choice = intInputValidation(0, 1, "Enter no. :")
-        match choice:
-            case 1:
-                if room.status == False:
-                    print("The room is unavailable")
-                else:
-                    bookingRoom(room)
-                break
-            case 0:
-                break
-                            
-def viewRoom():
-    back = False
-    while not back:
-        d("Room List")
-        print(f"{'No.':<5s}{'ID':<10s}{'Name':<20s}{'Location':<20s}")
-
-        for x in range(len(rooms)):
-            print(f"{x + 1:<5d}{rooms[x].displayBrief()}")
-
-        menuMsg("", f"\n1 - {len(rooms)} View details", "0 Back")
-        choice = intInputValidation(0, len(rooms), "Enter no. :")
-        match choice:
-            case 0:
-                back = True
-            case _:
-                viewDetails(rooms[choice - 1])
-
-def bookingRoom(room):
-    menuMsg("Booking", "Please enter the date:- ")
-    date = dateInputValidation()
-    while True:
-        print("From Time: ")
-        fromTime = timeInputValidation()
-        print("To Time: ")
-        toTime = timeInputValidation()
-        time1 = datetime.datetime.combine(datetime.date.today(), fromTime)
-        time2 = datetime.datetime.combine(datetime.date.today(), toTime)
-
-        if (time2 - time1).total_seconds() / 60 <= 30:
-            print("The minimum booking duration is 30 minutes")
-        elif (time2 - time1).total_seconds() / 60 >= 120:
-            print("The maximum booking duration is 2 hours")
-        else:
-            break 
-
-    room.status = False
-    history.append(BookingHistory(room, date, fromTime, toTime))
-
-def returnKey():
-    d("Return Room's Key'")
-    print("Please enter the Room ID you want to return.")
-    roomID = input("Room ID: ")
-
-    roomIdFound = False
-    for h in history:
-        if h.room == roomID:
-            print("Return successfully.")
-            h.room.status = True
-            roomIdFound = True
-    
-    if roomIdFound == False:
-        print("Ambigious room ID entered.")
-
-    roomIdFound = False
-
-def bookingHistory():
-    menuMsg("Booking History")
-    for h in history:
-        print("Stud ID.\tRoom ID.\tRoom Name\tLocation\tDate\tTime")
-        print(h)
-
-def main_cli():
-
-    while True:
-        menuMsg("Home Pge", "1. Room List", "2. Return Room's Key", "3. Booking History", "0. Exit")
-        choice = intInputValidation(0, 3, "Enter no. :")
-        
-        match choice:
-            case 1:
-                viewRoom()
-            case 2:
-                returnKey()
-            case 3:
-                bookingHistory()
-            case 0:
-                break
+def exit():
+    if tkinter.messagebox.askyesno("Exit", "Are you sure you want to exit?"):
+        window.withdraw()
+        global GUI_window, app
+        GUI_window = False
+        app = False
 
 def main():
-    #if __name__ == "__main__":
-    if True:
-        try:
-            with open("Availability.json", "r") as file:
-                dataFromFile = json.load(file)
-            
-            for data in dataFromFile:
-                Availability(data.get("id"), data.get("slots"))
-        except Exception as e:
-            print("Availability-", e)
-            
-        try:
-            with open("DiscussionRoom.json", "r") as file:
-                dataFromFile = json.load(file)
+    window.protocol("WM_DELETE_WINDOW", exit)   #custom exit event
+    global GUI_window
 
-            for data in dataFromFile:
-                if data.get("location") == "Cyber Center":
-                    rooms.append(CyberCenter(data.get("id"), data.get("name"), data.get("location"), data.get("equipment")))
-                elif data.get("location") == "Library":
-                    rooms.append(Library(data.get("id"), data.get("name"), data.get("location"), data.get("capacity")))
-        except Exception as e:
-            print("DiscussionRoom-", e)
-            
-        try:
-            with open("BookingHistory.json", "r") as file:
-                dataFromFile = json.load(file)
-            
-            for data in dataFromFile:
-                room = linear_search(data.get("room"), rooms)
-                if not room == -1:
-                    history.append(BookingHistory(room, data.get("date"), data.get("time"), data.get("bookingDate")))
-        except Exception as e:
-            print("BookingHistory-", e)
+    if not GUI_window:
+        GUI_window = not GUI_window
 
         window.deiconify()
-        discussionRoomGUI()
+        if app:
+            discussionRoomGUI()
 
-        list = []
-        with open("BookingHistory.json", "w") as file:
-            for h in history:
-                list.append(h.json())
-            json.dump(list, file, indent=4)
-
-        list = []
-        with open("DiscussionRoom.json", "w") as file:
-            for room in rooms:
-                list.append(room.json())
-            json.dump(list, file, indent=4)
-        
-        list = []
-        with open("Availability.json", "w") as file:
-            for obj in Availability.availability():
-                list.append(obj.json())
-            json.dump(list, file, indent=4)
-            
-
-        #main()
-
+        print("The program is end.")

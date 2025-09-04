@@ -5,12 +5,16 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-FILENAME = "expenses.txt"
-BUDGET_FILE = "budget.txt"
+#--------- File Handling ---------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FILENAME = os.path.join(BASE_DIR, "expenses.txt")
+BUDGET_FILE = os.path.join(BASE_DIR, "budget.txt")
+
 
 def format_amount(amount):
     return f"{float(amount):.2f}"
 
+#--------- Expense Class and Validation ---------
 class Expense:
     def __init__(self, date, category, amount, description):
         self.date = date
@@ -53,6 +57,7 @@ def validate_description(desc_str):
         return False, "Description cannot be empty"
     return True, desc_str
 
+#--------- Data Handling ---------
 expenses = []
 budget = 0
 
@@ -188,56 +193,137 @@ class ShowExpensesPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent, bg="lightgrey")
         font_big = ("Arial", 14)
-        tk.Label(self, text="📋Show Expenses", fg="dark orange", bg="lightgrey", font=("Arial", 22, "bold", "underline")).pack(pady=20)
+
+        # Title
+        tk.Label(
+            self,
+            text="📋Show Expenses",
+            fg="dark orange",
+            bg="lightgrey",
+            font=("Arial", 22, "bold", "underline"),
+        ).pack(pady=20)
+
+        # Frame for Treeview
         frame = tk.Frame(self)
         frame.pack(expand=True, fill="both")
 
-        self.tree = ttk.Treeview(frame, columns=("Date", "Category", "Amount", "Description"), show="headings")
-        self.sort_desc = True
+        self.tree = ttk.Treeview(
+            frame,
+            height=15,
+            columns=("Date", "Category", "Amount", "Description"),
+            show="headings",
+        )
+        self.sort_desc = True  # start descending
+
+        # Headings
         self.tree.heading("Date", text="Date ↓", command=self.sort_by_date)
         self.tree.heading("Category", text="Category")
         self.tree.heading("Amount", text="Amount")
         self.tree.heading("Description", text="Description")
+
+        # Columns center align
         self.tree.column("Date", anchor="center")
         self.tree.column("Category", anchor="center")
         self.tree.column("Amount", anchor="center")
         self.tree.column("Description", anchor="center")
+
+        # Scrollbars
         vsb = ttk.Scrollbar(frame, orient="vertical", command=self.tree.yview)
         hsb = ttk.Scrollbar(frame, orient="horizontal", command=self.tree.xview)
-        self.tree.configure(yscroll=vsb.set, xscroll=hsb.set)
+        self.tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
         vsb.pack(side="right", fill="y")
         hsb.pack(side="bottom", fill="x")
         self.tree.pack(expand=True, fill="both")
 
-        tk.Button(self, text="Delete Selected", command=self.delete_selected, bg="red", fg="white", font=font_big, width=20).pack(pady=10)
-        tk.Button(self, text="Delete All", command=self.delete_all, bg="red", fg="white", font=font_big, width=20).pack(pady=10)
+        # Buttons
+        tk.Button(
+            self,
+            text="Delete Selected",
+            command=self.delete_selected,
+            bg="red",
+            fg="white",
+            font=font_big,
+            width=20,
+        ).pack(pady=10)
 
-        # Back button fixed at bottom
+        tk.Button(
+            self,
+            text="Delete All",
+            command=self.delete_all,
+            bg="red",
+            fg="white",
+            font=font_big,
+            width=20,
+        ).pack(pady=10)
+
+        # Back button
         back_frame = tk.Frame(self, bg="lightgrey")
         back_frame.pack(side="bottom", fill="x", pady=10)
-        tk.Button(back_frame, text="Back", command=lambda: controller.show_frame(MainMenu), font=font_big).pack()
+        tk.Button(
+            back_frame,
+            text="Back",
+            command=lambda: controller.show_frame(MainMenu),
+            font=font_big,
+        ).pack()
 
+        # Fill table
         self.refresh_tree()
 
-    def refresh_tree(self):
+    # ----------------- Refresh Tree -----------------
+    def refresh_tree(self, sort_by_date=False):
         for item in self.tree.get_children():
             self.tree.delete(item)
-        for exp in sorted(expenses, key=lambda e: datetime.datetime.strptime(e.date, "%Y-%m-%d"), reverse=True):
-            self.tree.insert("", "end", values=(exp.date, exp.category, format_amount(exp.amount), exp.description))
 
+        # Sort if needed
+        if sort_by_date:
+            sorted_exp = sorted(
+                expenses,
+                key=lambda e: datetime.datetime.strptime(e.date, "%Y-%m-%d"),
+                reverse=self.sort_desc,
+            )
+        else:
+            sorted_exp = expenses
+
+        for exp in sorted_exp:
+            self.tree.insert(
+                "",
+                "end",
+                values=(exp.date, exp.category, format_amount(exp.amount), exp.description),
+            )
+
+
+
+    # ----------------- Delete Selected -----------------
     def delete_selected(self):
         selected = self.tree.selection()
         if not selected:
             messagebox.showwarning("Warning", "No expense selected.")
             return
-        idxs = [self.tree.index(item) for item in selected]
+
+        # Get values of selected rows
+        to_delete = []
         for item in selected:
-            self.tree.delete(item)
-        for idx in sorted(idxs, reverse=True):
-            del expenses[idx]
+            values = self.tree.item(item, "values")
+            to_delete.append(values)
+
+        # Remove from expenses list
+        for values in to_delete:
+            for exp in expenses:
+                if (
+                    exp.date == values[0]
+                    and exp.category == values[1]
+                    and format_amount(exp.amount) == values[2]
+                    and exp.description == values[3]
+                ):
+                    expenses.remove(exp)
+                    break
+
+        # Update UI + file
+        self.refresh_tree(sort_by_date=True)
         save_expenses()
         messagebox.showinfo("Success", "Selected expense(s) deleted.")
 
+    # ----------------- Delete All -----------------
     def delete_all(self):
         if not expenses:
             messagebox.showwarning("Warning", "No expenses to delete.")
@@ -249,19 +335,15 @@ class ShowExpensesPage(tk.Frame):
             save_expenses()
             messagebox.showinfo("Success", "All expenses deleted.")
 
+    # ----------------- Sort by Date -----------------
     def sort_by_date(self):
         self.sort_desc = not self.sort_desc
-        sorted_expenses = sorted(
-            enumerate(expenses),
-            key=lambda x: datetime.datetime.strptime(x[1].date, "%Y-%m-%d"),
-            reverse=self.sort_desc
-        )
-        new_expenses = [expenses[i] for i, _ in sorted_expenses]
-        expenses.clear()
-        expenses.extend(new_expenses)
-        self.refresh_tree()
+        self.refresh_tree(sort_by_date=True)
+
+        # Update arrow in heading
         arrow = "↓" if self.sort_desc else "↑"
         self.tree.heading("Date", text=f"Date {arrow}", command=self.sort_by_date)
+
 
 class SetBudgetPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -270,7 +352,7 @@ class SetBudgetPage(tk.Frame):
         tk.Label(self, text="🎯Set Budget", fg="dark orange", bg="lightgrey", font=("Arial", 22, "bold", "underline")).pack(pady=20)
         frame = tk.Frame(self, bg="lightgrey")
         frame.place(relx=0.5, rely=0.5, anchor="center")
-        tk.Label(frame, text="Enter monthly budget: RM", font=font_big, bg="lightgrey").pack(pady=10)
+        tk.Label(frame, text="Enter budget: RM", font=font_big, bg="lightgrey").pack(pady=10)
         preset_amounts = ["100", "200", "500", "1000", "2000"]
         self.budget_entry = ttk.Combobox(frame, values=preset_amounts, font=font_big, width=23)
         self.budget_entry.pack(pady=10)
@@ -376,6 +458,7 @@ class AnalysisPage(tk.Frame):
             self.canvas.draw()
             self.canvas.get_tk_widget().pack(pady=20)
 
+#--------- Main Application ---------
 class ExpenseApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -401,9 +484,11 @@ class ExpenseApp(tk.Tk):
         elif isinstance(frame, AnalysisPage):
             frame.update_analysis()
         frame.tkraise()
-
+        
+#--------- Run Application ---------
 if __name__ == "__main__":
     load_expenses()
     load_budget()
     app = ExpenseApp()
     app.mainloop()
+
