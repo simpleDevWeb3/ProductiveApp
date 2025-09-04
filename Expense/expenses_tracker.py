@@ -208,6 +208,7 @@ class ShowExpensesPage(tk.Frame):
 
         self.tree = ttk.Treeview(
             frame,
+            height=15,
             columns=("Date", "Category", "Amount", "Description"),
             show="headings",
         )
@@ -228,7 +229,7 @@ class ShowExpensesPage(tk.Frame):
         # Scrollbars
         vsb = ttk.Scrollbar(frame, orient="vertical", command=self.tree.yview)
         hsb = ttk.Scrollbar(frame, orient="horizontal", command=self.tree.xview)
-        self.tree.configure(yscroll=vsb.set, xscroll=hsb.set)
+        self.tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
         vsb.pack(side="right", fill="y")
         hsb.pack(side="bottom", fill="x")
         self.tree.pack(expand=True, fill="both")
@@ -288,6 +289,8 @@ class ShowExpensesPage(tk.Frame):
                 "end",
                 values=(exp.date, exp.category, format_amount(exp.amount), exp.description),
             )
+
+
 
     # ----------------- Delete Selected -----------------
     def delete_selected(self):
