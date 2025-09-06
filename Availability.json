@@ -2,20 +2,20 @@
     {
         "id": "CC0001",
         "slots": {
-            "05-09-2025": [
-                false,
-                true,
-                true,
-                true
-            ],
-            "06-09-2025": [
-                false,
-                true,
-                true,
-                true
-            ],
             "07-09-2025": [
                 false,
+                true,
+                true,
+                true
+            ],
+            "08-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "09-09-2025": [
+                true,
                 true,
                 true,
                 true
@@ -25,19 +25,19 @@
     {
         "id": "CC0002",
         "slots": {
-            "05-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
-            "06-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
             "07-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "08-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "09-09-2025": [
                 true,
                 true,
                 true,
@@ -48,19 +48,19 @@
     {
         "id": "CC0003",
         "slots": {
-            "05-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
-            "06-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
             "07-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "08-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "09-09-2025": [
                 true,
                 true,
                 true,
@@ -71,19 +71,19 @@
     {
         "id": "CC0004",
         "slots": {
-            "05-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
-            "06-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
             "07-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "08-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "09-09-2025": [
                 true,
                 true,
                 true,
@@ -94,19 +94,19 @@
     {
         "id": "CC0005",
         "slots": {
-            "05-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
-            "06-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
             "07-09-2025": [
+                false,
+                true,
+                true,
+                true
+            ],
+            "08-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "09-09-2025": [
                 true,
                 true,
                 true,
@@ -117,19 +117,19 @@
     {
         "id": "LB0001",
         "slots": {
-            "05-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
-            "06-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
             "07-09-2025": [
+                false,
+                false,
+                false,
+                true
+            ],
+            "08-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "09-09-2025": [
                 true,
                 true,
                 true,
@@ -140,19 +140,19 @@
     {
         "id": "LB0002",
         "slots": {
-            "05-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
-            "06-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
             "07-09-2025": [
+                false,
+                false,
+                true,
+                true
+            ],
+            "08-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "09-09-2025": [
                 true,
                 true,
                 true,
@@ -163,19 +163,19 @@
     {
         "id": "LB0003",
         "slots": {
-            "05-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
-            "06-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
             "07-09-2025": [
+                false,
+                true,
+                true,
+                true
+            ],
+            "08-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "09-09-2025": [
                 true,
                 true,
                 true,
@@ -186,19 +186,19 @@
     {
         "id": "LB0004",
         "slots": {
-            "05-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
-            "06-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
             "07-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "08-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "09-09-2025": [
                 true,
                 true,
                 true,
@@ -209,19 +209,19 @@
     {
         "id": "LB0005",
         "slots": {
-            "05-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
-            "06-09-2025": [
-                true,
-                true,
-                true,
-                true
-            ],
             "07-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "08-09-2025": [
+                true,
+                true,
+                true,
+                true
+            ],
+            "09-09-2025": [
                 true,
                 true,
                 true,

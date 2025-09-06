@@ -60,3 +60,35 @@ class DiscussionRoom:
     
     def json(self):
         return {"id": self._ID, "name": self._name, "location": self._location}
+
+    @staticmethod
+    def OrderBy(rooms, field, asc):
+        match field:
+            case "Available (Slots)":
+                n = len(rooms)
+                for i in range(n):
+                    min_index = i
+                    for j in range(i + 1, n):
+                        if rooms[j].totalSlotsAvailable() < rooms[min_index].totalSlotsAvailable():
+                            min_index = j
+                    rooms[i], rooms[min_index] = rooms[min_index], rooms[i]
+
+            case "Name" | "ID":
+                n = len(rooms)
+                for i in range(n):
+                    min_index = i
+                    for j in range(i + 1, n):
+                        if rooms[j].name < rooms[min_index].name:
+                            min_index = j
+                    rooms[i], rooms[min_index] = rooms[min_index], rooms[i]
+
+            case "Location":
+                n = len(rooms)
+                for i in range(n):
+                    min_index = i
+                    for j in range(i + 1, n):
+                        if rooms[j].location < rooms[min_index].location:
+                            min_index = j
+                    rooms[i], rooms[min_index] = rooms[min_index], rooms[i]
+        rooms = reversed(rooms) if not asc else rooms
+        return rooms

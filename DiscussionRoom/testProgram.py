@@ -1,3 +1,4 @@
+from DiscussionRoom.DiscussionRoom import DiscussionRoom
 from DiscussionRoom.CyberCenter import CyberCenter
 from DiscussionRoom.Library import Library
 from DiscussionRoom.Availability import Availability
@@ -22,6 +23,8 @@ window.withdraw()
 
 class discussionRoomGUI:
     def __init__(self):
+        global rooms
+
         #read file
         #"""
         try:
@@ -57,6 +60,8 @@ class discussionRoomGUI:
             print("BookingHistory-", e)
         #"""
 
+        
+        #rooms = DiscussionRoom.OrderBy(rooms)
         HomePage()   
         window.mainloop()
 
@@ -133,9 +138,13 @@ class HomePage:
 class RoomList:
     _previousPage = None
 
-    def __init__(self):
+    def __init__(self, rooms_to_display = rooms, asc = False):
         if RoomList._previousPage:
             RoomList._previousPage.destroy()
+
+        self.asc = not asc  #use for sorting direction
+
+        self.rooms_to_display = rooms_to_display
 
         window.title("Room List")
         self.frameForDetail = False
@@ -153,7 +162,7 @@ class RoomList:
         self.table = ttk.Treeview(self.frame, columns=HEARDER, show="headings")
 
         for header in HEARDER:
-            self.table.heading(header, text=header)
+            self.table.heading(header, text=header, command=lambda c=header: self.on_header_click(c))
         
         self.table.column("No.",       width=50,  anchor="w")   # left align
         self.table.column("ID",        width=100, anchor="center")
@@ -162,7 +171,7 @@ class RoomList:
         self.table.column("Available (Slots)", width=180, anchor="center")
 
         self.rooms_record = {}
-        for i, room in enumerate(rooms, start=1):
+        for i, room in enumerate(self.rooms_to_display, start=1):
             record_id = self.table.insert("", END, values=(i, *room.displayBriefForGuiTable())) # values -> split(*) and merge with no.
             self.rooms_record[record_id] = room     #assign unique id for each row
 
@@ -222,6 +231,12 @@ class RoomList:
                 tkinter.messagebox.showerror("Error", "The room is not available.")
         else:         
             tkinter.messagebox.showerror("Error", "Please select a room.")
+
+    def on_header_click(self, column):
+        print(f"Header clicked: {column}")
+        room_to_display = DiscussionRoom.OrderBy(list.copy(rooms), column, self.asc)
+        self.destroy()
+        RoomList(room_to_display, self.asc)
 
 class RoomDetail:
     def __init__(self, frame, room):

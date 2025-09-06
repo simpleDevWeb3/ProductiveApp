@@ -14,12 +14,12 @@
         }
     },
     "State": {
-        "isStart": true,
+        "isStart": false,
         "CurrentMode": "Pomodoro"
     },
     "Timer": {
         "Min": 0,
-        "Sec": 24
+        "Sec": 21
     },
     "Task": [
         {
