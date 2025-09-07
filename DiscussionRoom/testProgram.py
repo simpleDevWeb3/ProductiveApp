@@ -14,6 +14,7 @@ rooms = []
 history = []
 GUI_window = False #use to prevent multiple window being created -> window
 app = True  #use to prevent duplicated GUI being created -> frame
+room_to_display_parameter = []
 
 window = Tk()
 window.configure(bg="lightblue")
@@ -225,6 +226,8 @@ class RoomList:
                 if self.frameForDetail:
                     self.frameForDetail.destroy() 
                 
+                global room_to_display_parameter
+                room_to_display_parameter = [self.rooms_to_display, self.asc]
                 self.frameForDetail = Booking_Date(self.frame, room)
 
             else:
@@ -291,7 +294,7 @@ class Booking_Date:
         print(dateOptions)
 
         # Tkinter variable
-        self.selected_date = StringVar(value=dateOptions[0])
+        self.selected_date = StringVar(value=dateOptions[0])    #display the first date
 
         # Change font for listbox (dropdown part of Combobox)
         window.option_add("*TCombobox*Listbox*Font", ("Calibri", 12))
@@ -299,7 +302,7 @@ class Booking_Date:
         # Create Combobox
         dropdown = ttk.Combobox(self.frame1, 
                                 font=("Arail", 12),
-                                textvariable=self.selected_date, 
+                                textvariable=self.selected_date,
                                 values=dateOptions, 
                                 state="readonly")
         dropdown.grid(row=2, column=2, padx=(0, 40), pady=(10, 20))
@@ -352,16 +355,17 @@ class Booking_Time:
                bg="lightgreen",
                width=10, 
                justify="center", 
-               command=self.show_selection
+               command=self.make_booking
                ).grid(row=4, column=1, columnspan=2, pady=10)
     
-    def show_selection(self):
+    def make_booking(self):
         self.room.updateSlotStatus(self.date, self.selected_time.get())
         history.insert(0, BookingHistory(self.room, self.date, self.selected_time.get(), datetime.date.today().strftime("%d-%m-%Y")))
         tkinter.messagebox.showinfo("Successfully", "Your booking has been successfully made.")
         print(history[0])
         self.frame.destroy()
-        RoomList()
+        global room_to_display_parameter
+        self.frameForDetail = RoomList(room_to_display_parameter[0], room_to_display_parameter[1])
         
 class History:
     def __init__(self):
