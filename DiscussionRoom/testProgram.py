@@ -369,6 +369,9 @@ class Booking_Time:
         
 class History:
     def __init__(self):
+        window.title("History")
+        self.frameForDetail = False
+    
         self.frame = Frame(window, bg="lightblue")
         self.frame.pack()
 
@@ -391,10 +394,17 @@ class History:
         self.table.column("Time",           width=100, anchor="center")
         self.table.column("Booking Date",   width=125, anchor="center")
 
+        """
         for i, h in enumerate(history, start=1):
             self.table.insert("", END, values=(i, *h.displayBriefForGuiTable()))
+        """
+        self.history_record = {}
+        for i, h in enumerate(history, start=1):
+            record_id = self.table.insert("", END, values=(i, *h.displayBriefForGuiTable())) # values -> split(*) and merge with no.
+            self.history_record[record_id] = h     #assign unique id for each row
 
         self.table.pack()
+        self.table.bind("<<TreeviewSelect>>", self.viewDetail)  #view detail when room selected
 
         Button(self.frame, 
                bg="grey",
@@ -406,6 +416,19 @@ class History:
     def back(self):
         self.frame.destroy()
         HomePage()
+
+    def extractHistory(self, event):
+        selected_row = self.table.focus()
+        h = self.history_record.get(selected_row)
+        print(h)
+        return h
+
+    def viewDetail(self, event):
+        h = self.extractHistory(event)
+        if self.frameForDetail:
+            self.frameForDetail.destroy() 
+            
+        self.frameForDetail = RoomDetail(self.frame, h.room)
 
 def linear_search(target, list):
     for value in list:
