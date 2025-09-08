@@ -1,11 +1,9 @@
-<h1 align="center">Expenses Tracker and GPA Calculator Application</h1>
+<h1 align="center">Expenses Tracker</h1>
 
 ## Table of Contents 
 - [Install the required dependencies](#install-the-required-dependencies)
-- [How to run the application](#how-to-run-the-application)
-- [Application menu](#application-menu)
+- [How to run the application](#run-the-application)
 - [Expenses tracker application](#expenses-tracker-application)
-- [GPA Calculator application](#gpa-calculator-application)
 
 ## Install the required dependencies
 - type the command below in command prompt:
