@@ -2,7 +2,6 @@
 
 ## Table of Contents 
 - [Install the required dependencies](#install-the-required-dependencies)
-- [How to run the application](#run-the-application)
 - [Expenses tracker application](#expenses-tracker-application)
 
 ## Install the required dependencies
@@ -10,29 +9,6 @@
     ```
     pip install matplotlib
     ```
-    
-## Run the application
-
-A. Visual Studio Code:
-   ```
-    - open visual studio code make sure have install python extension then only debug the python file.
-   ```
-
-B. Command Prompt:
-   ```
-    - open the assignment.py file folder
-    - right click the folder, choose command prompt
-    - enter command "python main.py"
-   ```
-
-C. Anaconda Prompt:
-```
-     - please make sure downloaded Anaconda Distribution from https://docs.anaconda.com/anaconda/getting-started
-     - open anaconda prompt 
-     - enter the right path (foward): cd "folder name"
-     - enter the right path (backward): cd..
-     - enter command "python main.py" to execute the python file
-```
 
 ## Expenses tracker application
 
