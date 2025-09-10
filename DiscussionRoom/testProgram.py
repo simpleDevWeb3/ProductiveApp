@@ -24,10 +24,16 @@ window.withdraw()
 
 class discussionRoomGUI:
     def __init__(self):
-        global rooms
 
-        #read file
-        #"""
+        self.load_data()
+
+        HomePage()   
+        window.mainloop()
+
+        self.write_data()
+
+
+    def load_data(self):
         try:
             with open("Availability.json", "r") as file:
                 dataFromFile = json.load(file)
@@ -59,15 +65,8 @@ class discussionRoomGUI:
                     history.append(BookingHistory(room, data.get("date"), data.get("time"), data.get("bookingDate")))
         except Exception as e:
             print("BookingHistory-", e)
-        #"""
-
-        
-        #rooms = DiscussionRoom.OrderBy(rooms)
-        HomePage()   
-        window.mainloop()
-
-        #write file
-        #"""
+    
+    def write_data(self):
         list = []
         with open("BookingHistory.json", "w") as file:
             for h in history:
@@ -81,15 +80,15 @@ class discussionRoomGUI:
             json.dump(list, file, indent=4)
         rooms.clear()
         history.clear()
-        #"""
 
 class HomePage:
     def __init__(self):
-
-        window.title("Discussion Room Booking")
-
         self.frame = Frame(window, bg="lightblue")
         self.frame.pack(expand=True)
+        self.print_HomePage()
+
+    def print_HomePage(self):
+        window.title("Discussion Room Booking")
 
         btRoomList = Button(self.frame, 
                             text="Room List", 
@@ -144,16 +143,16 @@ class RoomList:
             RoomList._previousPage.destroy()
 
         self.asc = not asc  #use for sorting direction
-
         self.rooms_to_display = rooms_to_display
-
-        window.title("Room List")
         self.frameForDetail = False
 
+        self.print_RoomList()
+
+    def print_RoomList(self):
+        window.title("Room List")
         self.frame = Frame(window, bg="lightblue")
         self.frame.pack()
 
-        """***************************************************************TABLE"""
         style = ttk.Style()
         style.configure("Treeview", font=("Calibri", 12), rowheight=30)         # table content
         style.configure("Treeview.Heading", font=("Calibri", 14, "bold"))       # header
@@ -179,7 +178,6 @@ class RoomList:
         self.table.pack(fill="both", expand=True)
         self.table.bind("<<TreeviewSelect>>", self.viewDetail)  #view detail when room selected
 
-        """***************************************************************"""
         self.frame2 = Frame(self.frame, bg="lightblue")
         self.frame2.pack()
 
@@ -245,9 +243,12 @@ class RoomDetail:
     def __init__(self, frame, room):
         self.frame1 = Frame(frame)
         self.frame1.pack(pady=10)
+        self.room = room
+        self.print_RoomDetail()
 
+    def print_RoomDetail(self):
         Label(self.frame1, 
-              text=room, 
+              text=self.room, 
               font=("Calibri", 16), 
               justify=LEFT
               ).pack(padx=40, pady=20)
@@ -265,10 +266,14 @@ class RoomDetail:
 
 class Booking_Date:
     def __init__(self, frame, room):
-        self.frame1 = Frame(frame, bg="azure")
+        self.room = room
+        self.frame = frame
+        self.print_BookingDate()
+
+    def print_BookingDate(self):
+        self.frame1 = Frame(self.frame, bg="azure")
         self.frame1.pack(pady=10)
 
-        self.room = room
         Label(self.frame1,
               bg="azure",
               text="Booking", 
@@ -287,8 +292,8 @@ class Booking_Date:
 
         # Dropdown options
         dateOptions = []
-        for date in room.slots.slots.keys():
-            i = room.totalSlotsAvailable_date(date)
+        for date in self.room.slots.slots.keys():
+            i = self.room.totalSlotsAvailable_date(date)
             if not i == 0:
                 dateOptions.append(date)
         print(dateOptions)
@@ -322,7 +327,11 @@ class Booking_Time:
         self.room = room
         self.date = dateSelected
         self.frame = frame
-        Label(frame, 
+
+        self.print_BookingTime()
+
+    def print_BookingTime(self):
+        Label(self.frame, 
               bg="azure",
               text="Time: ",
               font=("Arail", 12, "bold"),
@@ -330,7 +339,7 @@ class Booking_Time:
 
         # Dropdown options
         timeOptions = []
-        for time, availability in room.slots.slots.get(dateSelected).items(): #get available time slots
+        for time, availability in self.room.slots.slots.get(self.date).items(): #get available time slots
             if availability:
                 timeOptions.append(time)
         print(timeOptions)
@@ -371,11 +380,12 @@ class History:
     def __init__(self):
         window.title("History")
         self.frameForDetail = False
+        self.print_History()
     
+    def print_History(self):
         self.frame = Frame(window, bg="lightblue")
         self.frame.pack()
 
-        """***************************************************************TABLE"""
         style = ttk.Style()
         style.configure("Treeview", font=("Calibri", 12), rowheight=30)     # table content style
         style.configure("Treeview.Heading", font=("Calibri", 14, "bold"))   # header style
@@ -394,10 +404,6 @@ class History:
         self.table.column("Time",           width=100, anchor="center")
         self.table.column("Booking Date",   width=125, anchor="center")
 
-        """
-        for i, h in enumerate(history, start=1):
-            self.table.insert("", END, values=(i, *h.displayBriefForGuiTable()))
-        """
         self.history_record = {}
         for i, h in enumerate(history, start=1):
             record_id = self.table.insert("", END, values=(i, *h.displayBriefForGuiTable())) # values -> split(*) and merge with no.
