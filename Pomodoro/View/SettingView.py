@@ -193,7 +193,6 @@ class SettingView(Frame):
       handler(pomodoro, shortbreak, longbreak)
    
     def set_timer(self,handler):
-       self.popout("Timer saved!")
        self.get_timer(handler)
 
     def reset_timer(self,handler):

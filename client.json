@@ -1,36 +1,42 @@
 {
     "Mode": {
         "Pomodoro": {
-            "Minute": 25,
+            "Minute": 21,
             "Seconds": 0
         },
         "ShortBreak": {
-            "Minute": 5,
+            "Minute": 10,
             "Seconds": 0
         },
         "LongBreak": {
-            "Minute": 10,
+            "Minute": 15,
             "Seconds": 0
         }
     },
     "State": {
         "isStart": false,
-        "CurrentMode": "ShortBreak"
+        "CurrentMode": "Pomodoro"
     },
     "Timer": {
-        "Min": 5,
+        "Min": 21,
         "Sec": 0
     },
     "Task": [
         {
             "Tid": 1,
-            "Tcontent": "1",
+            "Tcontent": "Made coffe",
             "Pomodoro": 2,
             "Count": 0
         },
         {
             "Tid": 2,
-            "Tcontent": "2",
+            "Tcontent": "Scheduling",
+            "Pomodoro": 2,
+            "Count": 0
+        },
+        {
+            "Tid": 3,
+            "Tcontent": "Rest",
             "Pomodoro": 2,
             "Count": 0
         }
@@ -42,14 +48,38 @@
             "Tasks": [
                 {
                     "Tid": 1,
-                    "Tcontent": "1",
+                    "Tcontent": "Made coffe",
                     "Pomodoro": 2,
                     "Count": 0
                 },
                 {
                     "Tid": 2,
-                    "Tcontent": "2",
+                    "Tcontent": "Scheduling",
                     "Pomodoro": 2,
+                    "Count": 0
+                },
+                {
+                    "Tid": 3,
+                    "Tcontent": "AAAAA",
+                    "Pomodoro": 3,
+                    "Count": 0
+                }
+            ]
+        },
+        {
+            "Fid": 2,
+            "FolderName": "gggg",
+            "Tasks": [
+                {
+                    "Tid": 2,
+                    "Tcontent": "dddd",
+                    "Pomodoro": 3,
+                    "Count": 0
+                },
+                {
+                    "Tid": 3,
+                    "Tcontent": "1111",
+                    "Pomodoro": 3,
                     "Count": 0
                 }
             ]

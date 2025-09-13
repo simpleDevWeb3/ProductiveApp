@@ -123,7 +123,7 @@ class FolderView(Frame):
             command=lambda: add_task(
                 folder,
                 task_entry.get().strip(),
-                int(pomodoro_entry.get())
+                pomodoro_entry.get()
             )
         )
        

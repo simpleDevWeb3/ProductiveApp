@@ -116,6 +116,11 @@ class Pomodoro(Frame):
     
     def F_add_folder(self,Fname):
         print("Fname ", Fname)
+        #  if empty str 
+        if Fname == "":
+            self.FolderView.popout(f"Please Enter Folder Name",bg="red")
+            return;
+
 
         #creat folder data
         Model.create_folder(Fname)
@@ -148,6 +153,22 @@ class Pomodoro(Frame):
     
     def F_createTask(self,Folder,task_name,pomodoro):
         print("Task: " + task_name)
+      
+        if task_name == "": 
+            #msg
+            self.FolderView.popout(f"Please Enter Task Name!",bg="red")
+            return
+        
+        if not pomodoro.isdigit():
+            #msg
+            self.FolderView.popout(f"Please Enter a valid number!",bg="red")
+            return
+        
+        pomodoro = int(pomodoro)
+        if pomodoro <= 0:
+            #msg
+            self.FolderView.popout(f"Please Enter Pomodoro more than 0!",bg="red")
+            return
 
         #create task data 
         Model.f_create_Task(Folder,task_name,pomodoro)
@@ -178,11 +199,19 @@ class Pomodoro(Frame):
         self.FolderView.popout(f"Task #[{Task["Tcontent"]}] deleted!","red")
 
     def setTimer (self,pomodoro,shortBreak,longBreak):
+        if not pomodoro.isdigit() or not shortBreak.isdigit() or not longBreak.isdigit():
+            self.settingView.popout("Please enter a valid number","red","white",True)
+            return
+    
+        if int(pomodoro) <= 0 or int(shortBreak) <= 0 or int(longBreak) <= 0:
+            self.settingView.popout("All session must be more than 0","red","white",True)
+            return
         Model.set_TimerMode("Pomodoro",pomodoro)
         Model.set_TimerMode("ShortBreak",shortBreak)
         Model.set_TimerMode("LongBreak",longBreak)
         Model.resetTimer()
         self.timerView.renderTimer(Model.get_timer('Min'),Model.get_timer('Sec'))
+        self.settingView.popout("Timer saved!")
     
         
         
@@ -341,7 +370,14 @@ class Pomodoro(Frame):
     ######################
     def SaveTask(self, tid,frame, button, entry,spinbox):
         task_text = entry.get().strip()
+        if not spinbox.get().strip().isdigit():
+            #msg
+            self.popout(f"Please Enter a valid number!",bg="red")
+            return
+        
         pomodoro_num = int(spinbox.get().strip())
+      
+    
         if task_text and pomodoro_num > 0:
             print(f"[Task #{tid}] Saved: {task_text}")
             TContent = task_text
